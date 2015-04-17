@@ -5,6 +5,7 @@ library(RCurl)
 library(stringi)
 
 #winner and nominates least
+#this URL was accessed on April 13, 2015
 url <- "http://en.wikipedia.org/wiki/Academy_Award_for_Best_Directing"
 html <- htmlTreeParse(url, useInternalNodes=T)
 
@@ -12,6 +13,7 @@ html <- htmlTreeParse(url, useInternalNodes=T)
 byDecades <- xpathSApply(html, "//table", xmlValue)[5:12]
 
 #ceremoney dates
+#this URL was accessed on April 13, 2015
 urlCeremony <- "http://en.wikipedia.org/wiki/List_of_Academy_Awards_ceremonies"
 htmlCeremony <- htmlTreeParse(urlCeremony, useInternalNodes=T)
 ceremonyList <- xpathSApply(htmlCeremony, "//table", xmlValue)[2]
@@ -28,13 +30,14 @@ for (i in 1:length(byDecades)) {
   #every year
   for (j in seq(1, length(items), 4)) {
     
-    year <- as.numeric(items[j])
+    #Oscars are held in the next year
+    year <- as.numeric(items[j]) + 1
     ceremonyDate <- datesText[grep(year, datesText)]
-  
+    
     multipleNames <- list()
-    if (grepl('and', items[j+1])) {
+    if (grepl("and", items[j+1])) {
       multipleNames <- unlist(strsplit(items[j+1], " and "))
-    } else if (grepl('&', items[j+1])) {
+    } else if (grepl("&", items[j+1])) {
       multipleNames <- unlist(strsplit(items[j+1], " & "))
     }
     if (length(multipleNames) > 1) {
@@ -44,18 +47,14 @@ for (i in 1:length(byDecades)) {
                           data.frame(year = as.numeric(items[j]),
                                      name = name,
                                      title = stri_sub(items[j+2], 4, -1),
-                                     date = ceremonyDate
-                                     )
-                          )        
+                                     date = ceremonyDate))        
       }
     } else {
       winnerDf <- rbind(winnerDf,
                         data.frame(year = as.numeric(items[j]),
                                    name = items[j+1],
                                    title = stri_sub(items[j+2], 4, -1),
-                                   date = ceremonyDate
-                                   )
-                        )      
+                                   date = ceremonyDate))      
     }
     
     #split nominates
@@ -80,5 +79,5 @@ for (i in 1:length(byDecades)) {
 nominatesDf <- na.omit(nominatesDf)
 
 #export to CSV
-write.csv(winnerDf, 'winners.csv', row.names=FALSE)
-write.csv(nominatesDf, 'nominates.csv', row.names=FALSE)
+write.csv(winnerDf, "winners.csv", row.names=FALSE)
+write.csv(nominatesDf, "nominates.csv", row.names=FALSE)

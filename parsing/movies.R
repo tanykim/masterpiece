@@ -3,11 +3,11 @@ library(rjson)
 library(RCurl)
 
 #data frame from the previous R code
-winners <- read.csv('winners.csv')
-nominates <- read.csv('nominates.csv')
+winners <- read.csv("winners.csv")
+nominates <- read.csv("nominates.csv")
 
 #data frame
-winnerDf <- data.frame(name = unique(read.csv('winners.csv')$name), id = 0)
+winnerDf <- data.frame(name = unique(read.csv("winners.csv")$name), id = 0)
 
 #API key
 API_KEY <- readLines("API_KEY.txt")
@@ -32,8 +32,8 @@ getPersonId <- function (name) {
       
       ##check title
       titlesFromWiki <- union(
-        as.character(winners[winners$name == name, 'title']),
-        as.character(nominates[nominates$name == name, 'title'])
+        as.character(winners[winners$name == name, "title"]),
+        as.character(nominates[nominates$name == name, "title"])
       )
       if (length(intersect(titles, titlesFromWiki)) > 0) {
         ids <- unlist(lapply(results, function (x) x$id))
@@ -44,23 +44,24 @@ getPersonId <- function (name) {
   personId
 }
 
+#missing & wrong elements
+winnerDf[winnerDf$name == "John Ford", "id"] <- 8500
+winnerDf[winnerDf$name == "George Stevens", "id"] <- 18738
+
 for (person in 1:nrow(winnerDf)) {
-  if (winnerDf[person, 'id'] == 0) {
-    winnerDf[person, 'id'] <- getPersonId(as.character(winnerDf[person, 'name']))
+  if (winnerDf[person, "id"] == 0) {
+    winnerDf[person, "id"] <- getPersonId(as.character(winnerDf[person, "name"]))
   }
 }
 
 #check if any ID is unfound
 unfound <- winnerDf$name[winnerDf$id == 0]
 
-#missing elements
-winnerDf[winnerDf$name == 'John Ford', 'id'] <- 8500
-
 #get titles
 getTitles <- function (dataset, movies, name) {
-  titles <- dataset[dataset$name == name, 'title']
+  titles <- dataset[dataset$name == name, "title"]
   titles <- unlist(lapply(titles, as.character))
-  movies[movies$title %in% titles, 'title']    
+  movies[movies$title %in% titles, "title"]    
 }
 
 #get movie
@@ -69,23 +70,28 @@ getMovies <- function (id, name, birthday) {
   movieURL <- paste("https://api.themoviedb.org/3/person/", id , 
                     "/movie_credits?api_key=", API_KEY, sep ="")
   movieData <- fromJSON(getURL(movieURL))
-
+  
   #get directed movies
   movies <- data.frame(t(sapply(movieData$crew,c)))
-  movies <- movies[movies$job == 'Director', c('release_date', 'title')]
-
+  movies <- movies[movies$job == "Director", c("release_date", "title")]
+  
   #get nominates and winner
   nominatedTitles <- getTitles(nominates, movies, name)
   wonTitles <- getTitles(winners, movies, name)
   movies$oscars <- ""
-  movies[movies$title %in% nominatedTitles , 'oscars'] <- 'nominated'
-  movies[movies$title %in% wonTitles , 'oscars'] <- 'won'
+  movies[movies$title %in% nominatedTitles , "oscars"] <- "nominated"
+  movies[movies$title %in% wonTitles , "oscars"] <- "won"
   
-  movies <- movies[movies$release_date != 'NULL', ]
+  #Birdman
+  if (name == "Alejandro González Iñárritu") {
+    movies[movies$title == "Birdman", "oscars"] <- "won"
+  }
+  
+  movies <- movies[movies$release_date != "NULL", ]
   
   #get years
   if (!is.null(birthday)) {
-    movies$ages <- lapply(movies$release_date, function(x) as.numeric(as.Date(x) - as.Date(birthday))/365.25)    
+    movies$age <- lapply(movies$release_date, function(x) as.numeric(as.Date(x) - as.Date(birthday))/365.25)    
   }
   
   #order by release date
@@ -107,24 +113,37 @@ getBio <- function (id) {
 #director list
 directors <- list()
 
+substrRight <- function(x, n){
+  substr(x, nchar(x)-n+1, nchar(x))
+}
+
 for (i in 1:length(winnerDf$name)) {
   name <- as.character(winnerDf$name[i])
   
   id <- winnerDf$id[i]
   bio <- getBio(id)
   
-  awards_dates <- as.character(winners[winners$name == name, 'date'])
+  #missing data
+  if (name == "Tom Hooper") {
+    bio$birthday <- "1972-10-01"
+  }
+  
+  awards_dates <- as.character(winners[winners$name == name, "date"])  
+  years <- substrRight(awards_dates, 4)
+
   birthday <- bio$birthday
-  age_at_first_award <- NULL
+  age <- NULL
   if (!is.null(birthday)) {
-    age_at_first_award <- as.numeric(as.Date(awards_dates[1], "%B %d, %Y") - as.Date(birthday)) / 365.25 
+    age <- as.numeric(as.Date(awards_dates[1], "%B %d, %Y") - as.Date(birthday)) / 365.25 
   }
   movies <- getMovies(id, name, birthday)
   moviesList <- unname(as.list(as.data.frame(t(movies))))
   
   director <- list(name = name,
+                   id = id,
                    bio = bio,
-                   age_at_first_award = age_at_first_award,
+                   years = as.list(years),
+                   age = age,
                    movies = moviesList)
   directors[i] <- list(director)
 }

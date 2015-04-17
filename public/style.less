@@ -1,0 +1,160 @@
+@import url(http://fonts.googleapis.com/css?family=Rokkitt:400,700|Open+Sans:400,700);
+
+@bg: #fff;
+@title_bg: #c5c5c5;
+@title: #000;
+@border: #999;
+
+body {
+	font-family: 'Open Sans', helvetica, arial, san-serif;
+	margin: 0;
+	padding: 0;
+	background: @bg;
+}
+
+.hide {
+	display: none;
+}
+.invisible {
+	visibility: hidden;
+}
+.link {
+	cursor: pointer;
+}
+.bold {
+	font-weight: 700;
+}
+
+.header-scrolled {
+	font-family: 'Rokkitt';
+	font-weight: 700;
+	font-size: 2em;
+	padding: 0.2em 0 !important;
+	background-color: @title_bg;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	text-align: center;
+}
+.header-axis {
+	position: fixed;
+	top: 40px;
+	left: 5%;
+	width: 90%;
+	background: @bg;
+	padding-top: 2em;
+}
+.header {
+	text-align: center;
+	.title {
+		color: @title;
+		font-family: 'Rokkitt';
+		font-weight: 700;
+		font-size: 3em;
+		padding: 0.5em 0;
+	}
+}
+.desc, .vis {
+	width: 90%;
+	margin: 0 auto;
+}
+.desc {
+	padding-top: 1em;
+	text-align: center;
+}
+
+.option-title {
+	padding-top: 1em;
+	padding-bottom: 0.5em;
+	font-weight: 700;
+}
+.sort {
+	/*font-size: 1.2em;*/
+	display: inline-block;
+	position: relative;
+	text-align: left;
+	width: 380px;
+	.sort-selected {
+		padding: 4px 16px;
+		border: 1px solid @border;
+		line-height: 38px;
+	}
+	.list {
+		width: 100%;
+		box-sizing: border-box;
+		background: @bg;
+		position: absolute;
+		top: 48px;
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		border-right: 1px solid @border;
+		border-bottom: 1px solid @border;
+		border-left: 1px solid @border;
+		li {
+			cursor: pointer;
+			padding: 12px 16px;
+		}
+		li:hover {
+			background-color: @title_bg;
+		}
+		.selected {
+			font-weight: 700;
+		}
+	}
+}
+.axis-switch {
+	margin-bottom: 2em;
+	/*text-align: right;*/
+}
+.footer {
+	font-size: 0.8em;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	padding: 1em;
+	background: rgba(255, 255, 255, 0.8);
+	text-align: center;
+}
+/* vis */
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.movie {
+	fill: #000;
+	opacity: 0.2;
+}
+
+.age {
+	stroke: #000;
+	stroke-width: 2;
+}
+.first-directing {
+	stroke: #00cc00;
+	stroke-width: 2;
+}
+.first-oscars {
+	stroke: #0000cc;
+	stroke-width: 2;
+}
+.birth, .death {
+	stroke: #cc0000;
+	stroke-width: 2;
+}
+.movie-info {
+	font-size: 16px;
+}
+.nominated {
+	fill: #666;
+}
+.won {
+	fill: #0000cc;
+}

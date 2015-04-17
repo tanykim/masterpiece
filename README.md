@@ -37,7 +37,14 @@ You will get dataset.json at the end.
 
 #### 3. Enjoy the visualization
 
-You can see the visualiatoin by opening the index.html file with the major browsers except Chrome. If you're using a chrome, open terminal and go to the folder where the index.html file is. Then start a simple web server.
+First process a Less file to generate a style file.
+
+```
+$ cd ../public/
+$ lessc style.less style.css
+```
+
+You can see the visualiatoin by opening the index.html file with the major browsers except Chrome. If you're using a chrome, start a simple web server.
 
 ```
 $ python -m SimpleHTTPServer
