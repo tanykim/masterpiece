@@ -2,40 +2,42 @@
 <meta charset="utf-8">
 <html>
 <head>
-<link rel="stylesheet" href="style.css"/>
 <title>Road to Master Piece</title>
-
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/underscorejs/1.8.3/underscore-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.1/moment.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script type="text/javascript" src="tipsy.js"></script>
+<link rel="stylesheet" href="style.css"/>
+<link rel="stylesheet" href="tipsy.css"/>
 </head>
 <body>
 <div class="header">
 	<div class="title">Road to Master Piece</div>
-</div>
-<div class="desc">
-	61 Film directors who won Academy Awards for Best Directing
-	<div class="option-title">Sort by</div>
-	<div class="sort">
-		<div class="sort-selected link js-sort-selected">Year (new to old)</div>
+	<div class="desc">61 Film directors who won Academy Awards for Best Directing Since 1941</div>
+	<ul class="options">
+
+	<li class="option-title">Sort by</li>
+	<li class="sort">
+		<div class="sort-selected link js-sort-selected">Year of the first Oscars (new to old)</div>
 		<ul class="list invisible js-sort-list">
-			<li data-value="year_asc"> Year (old to new) </li>
-			<li class="selected" data-value="year_desc"> Year (new to old) </li>
-			<li data-value="age_asc"> Age (young to old) </li>
-			<li data-value="age_desc"> Age (old to young)</li>
+			<li data-value="year_asc"> Year of the first Oscars(old to new) </li>
+			<li class="selected" data-value="year_desc"> Year of the first Oscars(new to old) </li>
+			<li data-value="age_asc"> Age at the first Oscars(young to old) </li>
+			<li data-value="age_desc"> Age at the first Oscars(old to young)</li>
+			<li data-value="career_asc"> Years of career (short to long) </li>
+			<li data-value="career_desc"> Years of career (short to long) </li>
 			<li data-value="firstname"> Name (A-Z)</li>
-			<li data-value="count_asc"> Number of Directed Movies (small to large)</li>
-			<li data-value="count_desc"> Number of Directed Movies (large to small)</li>
-			<li data-value="career_asc"> Years of Career (short to long) </li>
-			<li data-value="career_desc"> Years of Career (short to long) </li>
+			<li data-value="count_asc"> Number of directed movies (small to large)</li>
+			<li data-value="count_desc"> Number of directed movies (large to small)</li>
 		</ul>
-	</div>
-	<div class="axis-switch">
-		<div class="option-title">Timeline</div>
-		<input type="radio" name="axis" data-value="age" checked="checked">Age</input>
-		<input type="radio" name="axis" data-value="year">Year</input>
-	</div>
+	</li>
+	<li class="option-title"><span class="option-divide">&amp;</span> Timeline</li>
+	<li class="axis-switch">
+		<input type="radio" name="axis" data-value="age" checked="checked"> Age (0-100)</input>
+		<input type="radio" name="axis" data-value="year"> Year (1910-2020)</input>
+	</li>
+	</ul>
 </div>
 <div id="vis" class="vis"></div>
 <div id="vis-axis" class="header-axis hide js-header-axis"></div>
@@ -53,15 +55,15 @@ $(function() {
     function changeHeader() {
     	var p = $(window).scrollTop();
     	console.log(p);
-        if (p > 280) {
+        if (p > 140) {
         	$('.js-header-axis').removeClass('hide');
-        	$('.js-header-title').removeClass('hide');
+        	$('.js-header-title').fadeIn('fast');
         } else if (p > 50) {
         	$('.js-header-axis').addClass('hide');
-        	$('.js-header-title').removeClass('hide');
+        	$('.js-header-title').fadeIn('fast');
         } else {
         	$('.js-header-axis').addClass('hide');
-        	$('.js-header-title').addClass('hide');
+        	$('.js-header-title').fadeOut('fast');
         }
     }
     var scrolled = _.debounce(changeHeader, 100);

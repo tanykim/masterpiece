@@ -54,8 +54,8 @@ for (person in 1:nrow(winnerDf)) {
   }
 }
 
-#check if any ID is unfound
-unfound <- winnerDf$name[winnerDf$id == 0]
+#check if any ID is unfound -- not used anymor
+#unfound <- winnerDf$name[winnerDf$id == 0]
 
 #get titles
 getTitles <- function (dataset, movies, name) {
@@ -81,6 +81,15 @@ getMovies <- function (id, name, birthday) {
   movies$oscars <- ""
   movies[movies$title %in% nominatedTitles , "oscars"] <- "nominated"
   movies[movies$title %in% wonTitles , "oscars"] <- "won"
+  movies$year <- lapply(movies$title, function(x) {
+    if (x %in% nominatedTitles) {
+      nominates[nominates$title == x, 'year']
+    } else if (x %in% wonTitles) {
+      winners[winners$title == x, 'year']
+    } else {
+       ""
+    }
+  })    
   
   #Birdman
   if (name == "Alejandro González Iñárritu") {
@@ -89,7 +98,7 @@ getMovies <- function (id, name, birthday) {
   
   movies <- movies[movies$release_date != "NULL", ]
   
-  #get years
+  #get age
   if (!is.null(birthday)) {
     movies$age <- lapply(movies$release_date, function(x) as.numeric(as.Date(x) - as.Date(birthday))/365.25)    
   }
@@ -143,6 +152,7 @@ for (i in 1:length(winnerDf$name)) {
                    id = id,
                    bio = bio,
                    years = as.list(years),
+                   awards_dates = as.list(winners[winners$name == name, "date"]),
                    age = age,
                    movies = moviesList)
   directors[i] <- list(director)

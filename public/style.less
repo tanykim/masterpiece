@@ -6,7 +6,7 @@
 @border: #999;
 
 body {
-	font-family: 'Open Sans', helvetica, arial, san-serif;
+	font-family: Georgia, 'Open Sans', helvetica, arial, san-serif;
 	margin: 0;
 	padding: 0;
 	background: @bg;
@@ -44,47 +44,56 @@ body {
 	background: @bg;
 	padding-top: 2em;
 }
+
 .header {
+	padding-top: 1em;
 	text-align: center;
 	.title {
 		color: @title;
 		font-family: 'Rokkitt';
 		font-weight: 700;
 		font-size: 3em;
-		padding: 0.5em 0;
+	}
+	.desc {
+
 	}
 }
-.desc, .vis {
-	width: 90%;
-	margin: 0 auto;
-}
-.desc {
-	padding-top: 1em;
-	text-align: center;
-}
 
+.options {
+	background-color: @title_bg;
+	padding: 1em 0;
+	list-style-type: none;
+	margin: 2em 0 1em 0;
+	li {
+		display: inline-block;
+	}
+}
 .option-title {
-	padding-top: 1em;
-	padding-bottom: 0.5em;
 	font-weight: 700;
+	padding-right: 0.5em;
+}
+.option-divide {
+	padding-left: 0.8em;
+	padding-right: 0.4em;
 }
 .sort {
 	/*font-size: 1.2em;*/
 	display: inline-block;
 	position: relative;
 	text-align: left;
-	width: 380px;
+	width: 340px;
 	.sort-selected {
+		background-color: #fff;
 		padding: 4px 16px;
 		border: 1px solid @border;
-		line-height: 38px;
+		line-height: 32px;
 	}
 	.list {
 		width: 100%;
 		box-sizing: border-box;
 		background: @bg;
 		position: absolute;
-		top: 48px;
+		top: 42px;
 		list-style-type: none;
 		margin: 0;
 		padding: 0;
@@ -92,6 +101,7 @@ body {
 		border-bottom: 1px solid @border;
 		border-left: 1px solid @border;
 		li {
+			display: list-item;
 			cursor: pointer;
 			padding: 12px 16px;
 		}
@@ -104,7 +114,7 @@ body {
 	}
 }
 .axis-switch {
-	margin-bottom: 2em;
+	/*margin-bottom: 2em;*/
 	/*text-align: right;*/
 }
 .footer {
@@ -116,45 +126,101 @@ body {
 	background: rgba(255, 255, 255, 0.8);
 	text-align: center;
 }
-/* vis */
-.axis text {
-  font: 10px sans-serif;
+
+.vis {
+	width: 90%;
+	margin: 0 auto;
 }
 
+/* vis */
+.axis text {
+	font-size: 14px;
+}
 .axis path,
 .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
+.axis-line {
+	stroke: #e5e5e5;
+	stroke-width: 1;
+}
 
+.vis .hide {
+	opacity: 0;
+}
 .movie {
 	fill: #000;
-	opacity: 0.2;
+	/*opacity: 0.2;*/
 }
 
 .age {
 	stroke: #000;
-	stroke-width: 2;
+	/*stroke-width: 5;*/
 }
-.first-directing {
-	stroke: #00cc00;
-	stroke-width: 2;
-}
-.first-oscars {
-	stroke: #0000cc;
-	stroke-width: 2;
-}
-.birth, .death {
+.career {
 	stroke: #cc0000;
-	stroke-width: 2;
+	/*stroke-width: 5;*/
 }
+
+.birth, .current, .death, .first-directing, .first-oscars {
+	stroke-width: 1;
+	stroke-dashArray: 2, 2;
+}
+.birth, .current, {
+	stroke: #000;
+}
+.first-directing, .first-oscars {
+	stroke: #cc0000;
+}
+
 .movie-info {
 	font-size: 16px;
+	text-anchor: middle;
 }
 .nominated {
+/*	stroke: #666;
+	stroke-width: 3;
+	fill: none;*/
 	fill: #666;
 }
 .won {
+	/*stroke: #0000cc;
+	stroke-width: 3;
+	fill: none;*/
 	fill: #0000cc;
+}
+
+.tipsy {
+	.name {
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.first {
+		text-align: center;
+		margin-top: 1em;
+		padding: 0.5em 0;
+		border-top: 1px solid #fff;
+		border-bottom: 1px solid #efefef;
+	}
+	.first-time {
+		text-align: center;
+		padding: 0.5em 0;
+		border-bottom: 1px solid #fff;
+		.time {
+			color: #cc0000;
+		}
+	}
+	.highlighted {
+		margin-top: 1em;
+	}
+	.list {
+		margin: 0;
+		padding: 0;
+	}
+	.directed {
+		margin-top: 1em;
+		font-size: 0.8em;
+	}
 }
