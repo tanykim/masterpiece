@@ -24,25 +24,46 @@ body {
 .bold {
 	font-weight: 700;
 }
+.unselectable {
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+	-o-user-select: none;
+	user-select: none;
+	cursor: default;
+}
 
+@headerH: 48px;
+@headerPadding: 6px;
 .header-scrolled {
+	z-index: 200;
 	font-family: 'Rokkitt';
 	font-weight: 700;
-	font-size: 2em;
-	padding: 0.2em 0 !important;
+	font-size: 32px;
+	padding: @headerPadding 0;
 	background-color: @title_bg;
 	position: fixed;
 	top: 0;
 	width: 100%;
 	text-align: center;
+	line-height: @headerH;
 }
-.header-axis {
-	position: fixed;
-	top: 40px;
-	left: 5%;
+.vis {
 	width: 90%;
-	background: @bg;
-	padding-top: 2em;
+	margin: 0 auto;
+	position: relative;
+}
+.vis-axis {
+	z-index: 200;
+	width: 100%;
+	height: 50px;
+	background-color: @bg;
+	padding-left: 5%;
+}
+.fixed {
+	position: fixed;
+	top: @headerH + @headerPadding * 2;
+	/*left: 10%;*/
 }
 
 .header {
@@ -60,7 +81,7 @@ body {
 }
 
 .options {
-	background-color: @title_bg;
+	background-color: #efefef;
 	padding: 1em 0;
 	list-style-type: none;
 	margin: 2em 0 1em 0;
@@ -78,6 +99,7 @@ body {
 }
 .sort {
 	/*font-size: 1.2em;*/
+	z-index: 100;
 	display: inline-block;
 	position: relative;
 	text-align: left;
@@ -127,70 +149,103 @@ body {
 	text-align: center;
 }
 
-.vis {
-	width: 90%;
-	margin: 0 auto;
-}
-
 /* vis */
+.vis line {
+	shape-rendering: crispEdges;
+}
 .axis text {
 	font-size: 14px;
 }
-.axis path,
 .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+   	stroke: #000;
 }
-.axis-line {
+.axis path {
+   fill: none;
+   stroke: none;
+}
+.x-axis {
+	stroke: #000;
+}
+.y-axis {
 	stroke: #e5e5e5;
 	stroke-width: 1;
 }
-
-.vis .hide {
-	opacity: 0;
-}
-.movie {
-	fill: #000;
-	/*opacity: 0.2;*/
+.y-axis-text {
+	text-anchor: end;
+	font-size: 14px;
 }
 
-.age {
+
+
+.director-more {
+	background-color: #efefef;
+	position: absolute;
+	top: 0;
+	left: 200px; /* vis-element.js margin:left */
+}
+
+/*.age {
 	stroke: #000;
-	/*stroke-width: 5;*/
+	stroke-width: 6;
+}*/
+/*.age-text {
+	fill: #000;
+	font-size: 12px;
+	.unselectable();
 }
 .career {
 	stroke: #cc0000;
-	/*stroke-width: 5;*/
+}*/
+.career-text, .age-text, .year-text, .year-text-others {
+	font-size: 12px;
+	.unselectable();
 }
-
-.birth, .current, .death, .first-directing, .first-oscars {
+.year {
+	stroke: #0000cc;
+}
+.year-others {
+	stroke: #000;
+}
+.year-text{
+	fill: #0000cc;
+}
+.year-text-others {
+	fill: #000;
+}
+/*
+.birth, .current, .first-directing, .first-oscars {
 	stroke-width: 1;
 	stroke-dashArray: 2, 2;
 }
 .birth, .current, {
 	stroke: #000;
 }
+.death-h, .death-v {
+	stroke: #000;
+	stroke-width: 4;
+}
 .first-directing, .first-oscars {
 	stroke: #cc0000;
 }
-
-.movie-info {
-	font-size: 16px;
-	text-anchor: middle;
-}
 .nominated {
-/*	stroke: #666;
+	stroke: #666;
 	stroke-width: 3;
-	fill: none;*/
+	fill: none;
 	fill: #666;
 }
 .won {
-	/*stroke: #0000cc;
+	stroke: #0000cc;
 	stroke-width: 3;
-	fill: none;*/
+	fill: none;
 	fill: #0000cc;
 }
+*/
+
+.movie-info {
+	font-size: 16px;
+	text-anchor: end;
+}
+
 
 .tipsy {
 	.name {

@@ -7,7 +7,7 @@ library(stringi)
 #winner and nominates least
 #this URL was accessed on April 13, 2015
 url <- "http://en.wikipedia.org/wiki/Academy_Award_for_Best_Directing"
-html <- htmlTreeParse(url, useInternalNodes=T)
+html <- htmlTreeParse(url, useInternalNodes=T, encoding="UTF-8")
 
 #from 1940s to 2010s
 byDecades <- xpathSApply(html, "//table", xmlValue)[5:12]
