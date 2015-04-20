@@ -16,11 +16,13 @@ define(['moment', 'textures'], function (moment, textures) {
 			h: _.size(data) * unitH - margin.bottom
 		};
 
+		$('.js-director-more').css('width', dim.w).css('left', margin.left);
+
 		svg = d3.select('#vis').append('svg')
 			.attr('width', dim.w + margin.left + margin.right)
-			.attr('height', dim.h + margin.bottom)
+			.attr('height', dim.h + margin.bottom + margin.top)
 			.append('g')
-			.attr('transform', 'translate(' + margin.left + ', 0)');
+			.attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 
 		var svgAxis = d3.select('#vis-axis').append('svg')
 			.attr('width', dim.w + margin.left + margin.right)
@@ -70,26 +72,16 @@ define(['moment', 'textures'], function (moment, textures) {
 				.attr('class', 'movie js-movies')
 				.on('mouseover', function (d) {
 					d3.select(this).style('opacity', 1);
-					// director.append('text')
-					// 	.attr('x', d3.mouse(this)[0] - movieR * 2)
-					// 	.attr('y', cy + movieR/2)
-					// 	.text(function () { return d.title + (d.oscars ? ' - ' + d.oscars : ''); })
-					// 	.attr('class', 'movie-info js-movie-info');
+					director.append('text')
+						.attr('x', d3.mouse(this)[0])
+						.attr('y', cy - movieR * 2)
+						.text(function () { return d.title + (d.oscars ? ' - ' + d.oscars : ''); })
+						.attr('class', 'movie-info js-movie-info');
 				})
 				.on('mouseout', function (d) {
 					d3.select(this).style('opacity', 0.2);
-					// d3.selectAll('.js-movie-info').remove();
+					d3.selectAll('.js-movie-info').remove();
 				});
-
-		// $('.movie').tipsy({
-		// 	gravity: 'e',
-		// 	html: true,
-		// 	title: function() {
-		// 		var d = this.__data__;
-		// 		return d.title + (d.oscars !== "" ? (' -' + d.oscars + ' (' + d.year + ')') : '');
-		// 	}
-		// });
-
 		_.each(['nominated', 'won'], function (sort) {
 			var movies = _.filter(data, function (d) {
 				return d.oscars === sort;
@@ -105,7 +97,7 @@ define(['moment', 'textures'], function (moment, textures) {
 		});
 	}
 
-	function drawLine(director, x1, x2, y1, y2, c, index) {
+	function drawLine(director, x1, x2, y1, y2, c, id) {
 		director.append('line')
 			.attr('x1', x1)
 			.attr('x2', x2)
@@ -114,17 +106,18 @@ define(['moment', 'textures'], function (moment, textures) {
 			.style('stroke', E.color[c])
 			.style('stroke-width', E.stroke[c])
 			.style('opacity', 0)
-			.attr('class', c + ' js-elm js-' + c + '-' + index);
+			.attr('class', c + ' js-' + c + '-' + id + ' js-elm js-elm-' + id);
 	}
 
-	function drawText(director, x, y, t, c, index) {
+	function drawText(director, x, y, t, c, id, anchor) {
 	 	director.append('text')
 			.attr('x', x)
 			.attr('y', y)
 			.text(t)
 			.style('fill', E.color[c])
 			.style('opacity', 0)
-			.attr('class', c + ' js-elm js-' + c + '-' + index);
+			.style('text-anchor', anchor)
+			.attr('class', c + ' js-' + c + '-' + id + ' js-elm js-elm-' + id);
 	}
 
 	function drawVis(E, data, x, y) {
@@ -137,14 +130,13 @@ define(['moment', 'textures'], function (moment, textures) {
 		svg.selectAll('.director')
 				.data(data)
 			.enter().append('g')
-				// .attr('id', function (d, i) { return i; })
 				.attr('class', function (d) { return 'director director-' + d.id; })
 				.attr('transform', function (d) { return 'translate(0, ' + y(d.id) + ')'; })
 
 		_.each(data, function (datum) {
 
-			var index = datum.id;
-			var director = d3.select('.director-' + index);
+			var id = datum.id;
+			var director = d3.select('.director-' + id);
 
 			//bg and director name
 			director.append('line')
@@ -154,69 +146,68 @@ define(['moment', 'textures'], function (moment, textures) {
 				.attr('y2', unitH)
 				.attr('class', 'y-axis');
 			director.append('text')
-				.attr('x', -9)
+				.attr('x', -20)
 				.attr('y', unitH/2 + 4)
 				.text(datum.name)
 				.attr('class', 'y-axis-text link js-axis-text');
+			director.append('path')
+				.attr('d', E.chevron().open)
+				.style('fill', E.color.chevron)
+				.attr('class', 'js-axis-text link js-axis-open-' + id);
 
 			//movies
 			drawMovies(datum.movies, director, x);
 
-			//career
-			var firstDirecting = datum.movies[0].age;
-			var firstOscars = datum.awards[0].age;
-
-			//career
-			var careerY = unitH - barW - barW/2;
-			// drawLine(director,
-			// 	x(firstOscars), x(firstOscars), 0, unitH,
-			// 	'first-oscars', index);
-			drawLine(director,
-				x(firstDirecting), x(firstOscars), careerY, careerY,
-				'career', index);
-
-			var tCareer = textures.lines().size(4).strokeWidth(1).background(E.color.career);
-			svg.call(tCareer);
-			svg.selectAll('.career').style('stroke', tCareer.url());
-
+			//birth and death
+			drawLine(director, 0, 0, 0, unitH + E.margin.more, 'birth', id);
+			drawText(director, 6, unitH + E.margin.more * 0.7,
+				'Born on ' + moment(datum.bio.birthday, 'YYYY-MM-DD').format('MMM D, YYYY') +
+				(datum.bio.place_of_birth
+				? ', ' + datum.bio.place_of_birth
+				: ''),
+				'birth-text', id);
+			var death = datum.bio.deathday
+				? moment(datum.bio.deathday, 'YYYY-MM-DD')
+					.diff(moment(datum.bio.birthday, 'YYYY-MM-DD'), 'years', true)
+				: moment().diff(moment(datum.bio.birthday, 'YYYY-MM-DD'), 'years', true);
+			drawLine(director, x(death), x(death), 0, unitH + E.margin.more,
+				'death', id);
 			drawText(director,
-				x(firstOscars) + 6, careerY,
-				Math.round((firstOscars-firstDirecting) * 10)/10 + ' years',
-				'career-text', index);
+				x(death) - 6, unitH + E.margin.more * 0.7,
+				(datum.bio.deathday
+				? 'Died on ' + moment(datum.bio.deathday, 'YYYY-MM-DD').format('MMM D, YYYY') +
+				', age ' + Math.floor(death)
+				: Math.floor(death) + ' year old'),
+				'death-text', id, 'end');
+			if (datum.bio.deathday) {
+				drawLine(director, x(death) - 5, x(death) + 5, unitH - 5, unitH - 5, 'death-h', id);
+				drawLine(director, x(death), x(death), unitH - 10, unitH, 'death-v', id);
+			}
 
-			//year
-			// drawLine(director,
-			// 	x(firstOscars), x(firstOscars), 0, unitH,
-			// 	'year', index);
-			// drawText(director,
-			// 	x(firstOscars) + 4, 16,
-			// 	datum.years[0],
-			// 	'year-text', index);
-
-			//current or death age
-			// var currentAge = datum.bio.deathday ?
-			// 	moment(datum.bio.deathday, 'YYYY-MM-DD')
-			// 		.diff(moment(datum.bio.birthday, 'YYYY-MM-DD'), 'years', true) :
-			// 	moment().diff(moment(datum.bio.birthday, 'YYYY-MM-DD'), 'years', true);
-			// drawLine(director,
-			// 	x(currentAge), x(currentAge), 0, unitH,
-			// 	'current', index);
-			// if (datum.bio.deathday) {
-			// 	var dead = moment(datum.bio.deathday, 'YYYY-MM-DD')
-			// 		.diff(moment(datum.bio.birthday, 'YYYY-MM-DD'), 'years', true);
-			// 	drawLine(director, x(dead) - 5, x(dead) + 5, cy, cy, 'death-h', index);
-			// 	drawLine(director, x(dead), x(dead), cy - 5, cy + 5, 'death-v', index);
-			// }
-			// drawLine(director, x(firstOscars), x(firstOscars), 0, unitH, 'curent', index);
-
-			//age span
+			//age
+			var firstOscars = datum.awards[0].age;
 			var ageY = barW + barW / 2;
-			drawLine(director, 0, x(firstOscars), ageY, ageY, 'age', index);
+			drawLine(director, 0, x(firstOscars), ageY, ageY, 'age', id);
 			var tAge = textures.lines().size(4).strokeWidth(1).background(E.color.age);
 			svg.call(tAge);
 			svg.selectAll('.age').style('stroke', tAge.url());
-			drawText(director, x(firstOscars) + 6, ageY + 10,
-				Math.floor(datum.age) + ' years old' , 'age-text', index);
+			drawText(director, x(firstOscars) + 16, ageY + 5,
+				Math.floor(datum.age) + ' years old' , 'age-text', id);
+
+			//career
+			var firstDirecting = datum.movies[0].age;
+			var firstOscars = datum.awards[0].age;
+			var careerY = unitH - barW - barW/2;
+			drawLine(director,
+				x(firstDirecting), x(firstOscars), careerY, careerY,
+				'career', id);
+			var tCareer = textures.lines().size(4).strokeWidth(1).background(E.color.career);
+			svg.call(tCareer);
+			svg.selectAll('.career').style('stroke', tCareer.url());
+			drawText(director,
+				x(firstOscars) + 16, careerY + 3,
+				Math.round((firstOscars-firstDirecting) * 10)/10 + ' years',
+				'career-text', id);
 
 			//awards dates
 			director.selectAll('.year')
@@ -226,11 +217,9 @@ define(['moment', 'textures'], function (moment, textures) {
 					.attr('x2', function (d) { return x(d.age); })
 					.attr('y1', 0)
 					.attr('y2', unitH)
-					// .style('stroke', E.color.year)
 					.attr('class', function (d, i) {
-						return 'year'  + (i > 0 ? '-others' : '') + ' js-elm js-years';
-						// return 'year js-elm js-years';
-
+						return 'year year'  + (i > 0 ? '-others' : '-first')
+							+ ' js-years js-elm js-elm-' + id + ' js-year-' + id;
 					});
 			director.selectAll('.year-text')
 					.data(datum.awards)
@@ -238,9 +227,10 @@ define(['moment', 'textures'], function (moment, textures) {
 					.attr('x', function (d) { return x(d.age) + 4; })
 					.attr('y', 14)
 					.text(function (d, i) { return datum.years[i]; })
-					// .style('fill', E.color['year-text'])
+					.attr('transform', function (d) { return 'rotate(-45, ' + (x(d.age) + 8)+ ', 14)'; })
 					.attr('class', function (d, i) {
-						return 'year-text'  + (i > 0 ? '-others' : '') + ' js-elm js-years-text';
+						return 'year-text year-text'  + (i > 0 ? '-others' : '-first')
+							+ ' js-years-text js-elm js-elm-' + id + ' js-year-text-' + id;
 					})
 		});
 	}

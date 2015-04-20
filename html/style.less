@@ -11,7 +11,6 @@ body {
 	padding: 0;
 	background: @bg;
 }
-
 .hide {
 	display: none;
 }
@@ -50,7 +49,7 @@ body {
 }
 .vis {
 	width: 90%;
-	margin: 0 auto;
+	margin: -50px auto 0; /* elments margin.top */
 	position: relative;
 }
 .vis-axis {
@@ -63,9 +62,7 @@ body {
 .fixed {
 	position: fixed;
 	top: @headerH + @headerPadding * 2;
-	/*left: 10%;*/
 }
-
 .header {
 	padding-top: 1em;
 	text-align: center;
@@ -79,7 +76,6 @@ body {
 
 	}
 }
-
 .options {
 	background-color: #efefef;
 	padding: 1em 0;
@@ -98,7 +94,6 @@ body {
 	padding-right: 0.4em;
 }
 .sort {
-	/*font-size: 1.2em;*/
 	z-index: 100;
 	display: inline-block;
 	position: relative;
@@ -135,10 +130,6 @@ body {
 		}
 	}
 }
-.axis-switch {
-	/*margin-bottom: 2em;*/
-	/*text-align: right;*/
-}
 .footer {
 	font-size: 0.8em;
 	position: fixed;
@@ -150,6 +141,43 @@ body {
 }
 
 /* vis */
+.director-more {
+	position: absolute;
+	top: 0;
+	padding: 1em;
+	border-bottom: 2px solid #666;
+	overflow: hidden;
+	box-sizing: border-box;
+	.dummy {
+		height: 30px;
+	}
+	.name {
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.first {
+		margin-top: 1em;
+		padding: 0.5em 0;
+		border-top: 1px solid #fff;
+		border-bottom: 1px solid #efefef;
+	}
+	.first-time {
+			padding: 0.5em 0;
+		border-bottom: 1px solid #fff;
+		.time {
+			color: #cc0000;
+		}
+	}
+	.highlighted {
+		margin: 0;
+		padding: 0;
+	}
+	.directed {
+		background-color: #fff;
+		margin-top: 1em;
+		font-size: 0.8em;
+	}
+}
 .vis line {
 	shape-rendering: crispEdges;
 }
@@ -174,108 +202,28 @@ body {
 	text-anchor: end;
 	font-size: 14px;
 }
-
-
-
-.director-more {
-	background-color: #efefef;
-	position: absolute;
-	top: 0;
-	left: 200px; /* vis-element.js margin:left */
-}
-
-/*.age {
-	stroke: #000;
-	stroke-width: 6;
-}*/
-/*.age-text {
-	fill: #000;
+.career-text, .age-text, .year-text, .year-text-others, .birth-text, .death-text {
 	font-size: 12px;
 	.unselectable();
 }
-.career {
-	stroke: #cc0000;
-}*/
-.career-text, .age-text, .year-text, .year-text-others {
-	font-size: 12px;
-	.unselectable();
-}
-.year {
+.year-first {
 	stroke: #0000cc;
 }
 .year-others {
 	stroke: #000;
 }
-.year-text{
+.year-text-first{
 	fill: #0000cc;
 }
 .year-text-others {
 	fill: #000;
 }
-/*
-.birth, .current, .first-directing, .first-oscars {
-	stroke-width: 1;
+.birth, .death, {
 	stroke-dashArray: 2, 2;
 }
-.birth, .current, {
-	stroke: #000;
-}
-.death-h, .death-v {
-	stroke: #000;
-	stroke-width: 4;
-}
-.first-directing, .first-oscars {
-	stroke: #cc0000;
-}
-.nominated {
-	stroke: #666;
-	stroke-width: 3;
-	fill: none;
-	fill: #666;
-}
-.won {
-	stroke: #0000cc;
-	stroke-width: 3;
-	fill: none;
-	fill: #0000cc;
-}
-*/
-
 .movie-info {
 	font-size: 16px;
-	text-anchor: end;
+	text-anchor: middle;
 }
 
 
-.tipsy {
-	.name {
-		font-size: 18px;
-		font-weight: bold;
-	}
-	.first {
-		text-align: center;
-		margin-top: 1em;
-		padding: 0.5em 0;
-		border-top: 1px solid #fff;
-		border-bottom: 1px solid #efefef;
-	}
-	.first-time {
-		text-align: center;
-		padding: 0.5em 0;
-		border-bottom: 1px solid #fff;
-		.time {
-			color: #cc0000;
-		}
-	}
-	.highlighted {
-		margin-top: 1em;
-	}
-	.list {
-		margin: 0;
-		padding: 0;
-	}
-	.directed {
-		margin-top: 1em;
-		font-size: 0.8em;
-	}
-}

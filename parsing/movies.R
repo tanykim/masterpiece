@@ -114,7 +114,7 @@ getBio <- function (id) {
   bio <- list (birthday = bioData$birthday,
                deathday = bioData$deathday,
                imdb_id = bioData$imdb_id,
-               place_of_birth = bioData$bioData$place_of_birth)
+               place_of_birth = bioData$bioData$place_of_birth
 }
 
 #director list
@@ -158,4 +158,4 @@ for (i in 1:length(winnerDf$name)) {
 
 #create JSON
 dataset <- toJSON(directors)
-write(dataset, "../public/dataset.json")
+write(dataset, "../html/public/dataset.json")

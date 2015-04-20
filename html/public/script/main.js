@@ -50,7 +50,7 @@ require([
         var data = d.reverse(); //from newest
         var vis = Vis.drawSVG(E, data);
         Vis.drawVis(E, data, vis.x.age, vis.y);
-        I.callSort(vis, data);
+        I.callInteraction(vis, data);
         I.callDirectorOpen(data);
     });
 
