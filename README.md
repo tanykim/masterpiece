@@ -1,12 +1,38 @@
 # Road to Master Piece
 
-"Road to Master Piece" is a visualization project that shows the fourty-one diretors who one Academy Awards for Best Directing since 1940. 
+"Road to Master Piece" is a visualization project that shows the sixty-one diretors who one Academy Awards for Best Directing since 1941. 
 
-Each director's works are presented throughout time from their birth to the current date. The years when the director was nominated or won for the Oscars are highlighted, indicating the years took from his or her debut to the awarded master piece.
+Each director's works are presented throughout a timeline. Those movies that won or nominated are highlighted.
 
-## Data Retrieval
+*More explanation comes here.*
 
-#### 1. Run wiki.R
+## Client-side Set-up
+
+Process a Less file to generate a style file.
+
+```
+$ cd html
+$ lessc style.less /public/style/style.css
+```
+Install Javascript libraries
+
+```
+$ cd public
+bower install jquery underscore moment d3 textures
+````
+
+You can see the visualiatoin by opening the index.html file with the major browsers except Chrome. If you're using a chrome, start a simple web server.
+
+```
+$ python -m SimpleHTTPServer
+```
+Test on your browser.
+
+> http://localhost:8000
+
+## Data Retrieval (Optional)
+
+#### 1. wiki.R
 
 The list of Oscars winners are retreived from this Wikipedia page:
 
@@ -17,7 +43,7 @@ Ceremony dates are retreived from here:
 
 You will get two files at the end: winners.csv and nominates.csv
 
-####2. Run "movies.R"
+#### 2. movies.R
 
 
 Data of the directors' work and basic biography are accessible via The Movie Database API.
@@ -33,21 +59,4 @@ Open API_KEY.local and enter the API key you required. Then save it as a text fi
 ```
 $ cp API_KEY.local API_KEY.txt
 ```
-You will get dataset.json at the end.
-
-#### 3. Enjoy the visualization
-
-First process a Less file to generate a style file.
-
-```
-$ cd ../public/
-$ lessc style.less style.css
-```
-
-You can see the visualiatoin by opening the index.html file with the major browsers except Chrome. If you're using a chrome, start a simple web server.
-
-```
-$ python -m SimpleHTTPServer
-```
-Test on your browser.
-> http://localhost:8000
+You will get dataset.json in ../html/public folder at the end. 
