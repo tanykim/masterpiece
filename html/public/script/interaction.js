@@ -176,8 +176,13 @@ define(['moment'], function (moment) {
 			prevYPos = undefined;
 			prevId = undefined;
 
-			$(this).removeClass('link');
-			$('.js-sort-list').removeClass('invisible');
+			if ($(this).hasClass('clicked')) {
+				$('.js-sort-selected').removeClass('clicked');
+				$('.js-sort-list').addClass('invisible');
+			} else {
+				$('.js-sort-selected').addClass('clicked');
+				$('.js-sort-list').removeClass('invisible');
+			}
 
 			$('.js-sort-list').find('li').click(function() {
 
@@ -186,8 +191,8 @@ define(['moment'], function (moment) {
 
 				//update the selection text
 				$('.js-sort-selected').html($(this).text());
+				$('.js-sort-selected').removeClass('clicked');
 			    $('.js-sort-list').addClass('invisible');
-			   	$('.js-sort-selected').addClass('link');
 			   	$('.js-sort-list').find('li').removeClass('selected');
 			   	$(this).addClass('selected');
 
