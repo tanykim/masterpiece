@@ -3,7 +3,7 @@
 var E = {
 
 	unitH: 52,
-	margin: { top: 50, right: 20, bottom: 50, left: 200, more: 30 },
+	margin: { top: 50, right: 40, bottom: 100, left: 220, more: 30 },
 
 	movieR: 8,
 	barW: 6,

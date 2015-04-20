@@ -97,6 +97,7 @@ define(['moment'], function (moment) {
 
 	function updateSvgHeight(dir) {
 		var currentH = $('#vis').find('svg').outerHeight();
+		console.log('----', currentH, contentH);
 		$('#vis').find('svg').attr('height', +currentH + contentH * dir);
 	}
 
@@ -278,6 +279,9 @@ define(['moment'], function (moment) {
 	}
 
 	function slideDirectors(dir, yPos) {
+
+		updateSvgHeight(dir);
+
 		_.each($('#vis').find('.director'), function (g) {
 			var yTrans = getYPos($(g));
 			if (yTrans > yPos) {
