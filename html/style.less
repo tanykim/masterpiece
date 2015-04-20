@@ -135,14 +135,40 @@ body {
 		}
 	}
 }
+
 .footer {
-	font-size: 0.8em;
 	position: fixed;
 	bottom: 0;
 	width: 100%;
 	padding: 1em;
 	background: rgba(255, 255, 255, 0.8);
 	text-align: center;
+	color: #999;
+	span {
+		padding: 0 1em;
+	}
+	a {
+		color: #000;
+		text-decoration: none;
+	}
+	a:hover {
+		text-decoration: underline;
+	}
+	.source {
+		font-size: 14px;
+		margin-top: 6px;
+		line-height: 16px;
+		div {
+			margin-top: 12px;
+			a {
+				color: #999;
+				text-decoration: underline;
+			}
+		}
+		.close {
+			color: #000;
+		}
+	}
 }
 
 /* vis */

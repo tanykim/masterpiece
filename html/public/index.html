@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="header">
-	<div class="title">Road to Master Piece</div>
+	<div class="title js-title">Road to Master Piece</div>
 	<div class="desc">61 Film directors who won Academy Awards for Best Directing Since 1941</div>
 	<ul class="options">
 		<li class="option-title">Sort by</li>
@@ -61,10 +61,31 @@
 	</div>
 </div>
 <div class="header-scrolled hide js-header-title">Road to Master Piece</div>
-<div class="footer">
-	<span class="name">Design: <a href="http://tany.kim" target="_blank">Tanyoung Kim</a></span> |
-	<span class="link js-source">Data sources</span> |
-	<span>GitHub</span> |
+<div class="footer hide js-footer">
+	<span>Made By <a href="http://tany.kim" target="_blank">Tanyoung Kim</a></span> |
+	<span class="link js-source"><a>Data Sources</a></span> |
+	<span>View on <a href="https://github.com/tanykim/master-piece" target="_blank">GitHub</a></span> |
+
+	<div class="source hide js-source-content">
+		<div>
+			List of Academy Awards Winners<br/>
+			<a href="http://en.wikipedia.org/wiki/Academy_Award_for_Best_Directing" target="_blank">
+				http://en.wikipedia.org/wiki/Academy_Award_for_Best_Directing
+			</a>
+		</div>
+		<div>
+			Ceremony Dates of Academy Awards<br/>
+			<a href="http://en.wikipedia.org/wiki/List_of_Academy_Awards_ceremonies" target="_blank">
+				http://en.wikipedia.org/wiki/List_of_Academy_Awards_ceremonies
+			</a>
+		</div>
+		<div>
+			Directors' works and basic biography<br/>
+			The Movie Database API, <a href="http://docs.themoviedb.apiary.io" target="_blank">
+			http://docs.themoviedb.apiary.io</a>
+		</div>
+		<div class="close"><span class="link js-close">CLOSE</span></div>
+	</div>
 </div>
 <script data-main="/script/main" src="http://requirejs.org/docs/release/2.1.17/minified/require.js"></script>
 
