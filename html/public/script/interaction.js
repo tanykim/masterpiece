@@ -7,11 +7,11 @@ define(['moment'], function (moment) {
 	var sortOption = 'year_asc';
 
 	function rePosition(c, index, x1, x2, hasText) {
-		d3.select('.js-' + c + '-' + index)
+		d3.select('.js-' + c + '-' + index).transition()
 			.attr('x1', x1)
 			.attr('x2', x2);
 		if (hasText) {
-			d3.select('.js-' + c + '-text-' + index)
+			d3.select('.js-' + c + '-text-' + index).transition()
 				.attr('x', x2 + hasText);
 		}
 	}
@@ -65,13 +65,13 @@ define(['moment'], function (moment) {
 		});
 
 		//movies & years of awards
-		d3.selectAll('.js-movies')
+		d3.selectAll('.js-movies').transition()
 			.attr('cx', function (d) {
 				return option === 'year'
 					? x(moment(d.release_date, 'YYYY-MM-DD'))
 					: x(d.age);
 				});
-		d3.selectAll('.js-years')
+		d3.selectAll('.js-years').transition()
 			.attr('x1', function (d) {
 				return option === 'year'
 					? x(moment(d.date, 'MMMM D, YYYY'))
@@ -82,7 +82,7 @@ define(['moment'], function (moment) {
 					? x(moment(d.date, 'MMMM D, YYYY'))
 					: x(d.age);
 				})
-		d3.selectAll('.js-years-text')
+		d3.selectAll('.js-years-text').transition()
 			.attr('x', function (d) {
 				return option === 'year'
 					? x(moment(d.date, 'MMMM D, YYYY')) + 4
@@ -166,9 +166,10 @@ define(['moment'], function (moment) {
 		$('.js-sort-selected').click(function() {
 
 			//reset director open
-			$('.js-director-more').addClass('hide');
 			if (status === 'open') {
-				updateSvgHeight(-1);
+				$('.js-director-more').addClass('hide');
+				updateDirectorVis(prevId, 0);
+				slideDirectors(-1, prevYPos);
 				$('.js-axis-open-' + prevId).attr('d', E.chevron().open);
 				status = 'closed';
 			}
@@ -245,15 +246,15 @@ define(['moment'], function (moment) {
 		};
 
 		$('.js-d-name').html(d.name);
-		$('.js-d-lifespan').html(d.bio.birthday + ' - ' + d.bio.deathday);
-		$('.js-d-age').html(Math.floor(d.age));
-		$('.js-d-career').html(Math.round((d.age - d.movies[0].age) * 10) / 10);
+		$('.js-d-age').html(Math.floor(d.age)).css('color', E.color.age);
+		$('.js-d-year').html(d.years[0]);
+		$('.js-d-debut').html(d.movies[0].title + ' (' + d.movies[0].release_date.substring(0, 4) + ')');
+		$('.js-d-career').html(Math.round((d.age - d.movies[0].age) * 10) / 10).css('color', E.color.career);;
 
 		$('.js-d-won').html('');
 		_.each(highlights('won'), function (m) {
 			$('.js-d-won').append('<li>' + m.title + ' (' + m.year + ')</li>');
 		});
-
 		var nominated = highlights('nominated');
 		if (!_.isEmpty(nominated)) {
 			$('.js-d-nominated-wrapper').removeClass('hide');
@@ -265,20 +266,17 @@ define(['moment'], function (moment) {
 			$('.js-d-nominated-wrapper').addClass('hide');
 		}
 
-		$('.js-d-number').html(d.movies.length);
+		$('.js-d-number').html(d.movies.length).css('color', E.color.movie);;
 		$('.js-d-imdb').attr('href', 'http://www.imdb.com/name/' + d.bio.imdb_id);
 
 		contentH = $('.js-director-more').outerHeight();
 	}
 
 	function slideDirectors(dir, yPos) {
-
-		updateSvgHeight(dir);
-
 		_.each($('#vis').find('.director'), function (g) {
 			var yTrans = getYPos($(g));
 			if (yTrans > yPos) {
-				$(g).attr('transform', 'translate(0 ,' + (yTrans + contentH * dir) + ')');
+				d3.select(g).attr('transform', 'translate(0 ,' + (yTrans + contentH * dir) + ')');
 			};
 		});
 	}
@@ -305,9 +303,10 @@ define(['moment'], function (moment) {
 				var id = this.__data__.id;
 				if (id === prevId) { //close the opened one
 					$('.js-director-more').addClass('hide')
-					$('.js-axis-open-' + id).attr('d', E.chevron().open);
+					$('.js-axis-open-' + prevId).attr('d', E.chevron().open);
 					status = 'closed';
 				} else {
+					$('.js-axis-open-' + prevId).attr('d', E.chevron().open);
 					showDirector(getYPos($(this).parent()), this.__data__);
 				}
 			}
