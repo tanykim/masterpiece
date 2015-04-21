@@ -129,7 +129,8 @@ define(['moment'], function (moment) {
 
 	var callInteraction = function (data, vis) {
 
-		setChevron(vis.unitH);
+		var unitH = vis.unitH
+		setChevron(unitH);
 
 		var dataSort = function (option, a, b) {
 			if (option === 'age_desc') {
@@ -153,31 +154,9 @@ define(['moment'], function (moment) {
 			}
 		};
 
-		var posSort = function (option, newY, a, b) {
-			if (option === 'age_desc') {
-				return newY(a.age) - newY(b.age);
-			} else if (option === 'age_asc') {
-				return newY(b.age) - newY(a.age);
-			} else if (option === 'firstname') {
-				return newY(b.name) - newY(a.name);
-			} else if (option === 'year_asc') {
-				return newY(b.years[0]) - newY(a.years[0]);
-			} else if (option === 'year_desc') {
-				return newY(a.years[a.years.length-1]) - newY(b.years[b.years.length-1]);
-			} else if (option === 'count_desc') {
-				return newY(a.movies.length) - newY(b.movies.length);
-			} else if (option === 'count_asc') {
-				return newY(b.movies.length) - newY(a.movies.length);
-			} else if (option === 'career_asc') {
-				return newY(b.age-b.movies[0].age) - newY(a.age-a.movies[0].age);
-			} else {
-				return newY(a.age-a.movies[0].age) - newY(b.age-b.movies[0].age);
-			}
-		};
-
 		$('input[name=axis]').change(function() {
 			var option = $(this).data().value;
-			changeAxis(vis.x[option], vis.unitH/2, vis.xAxis[option], option, data);
+			changeAxis(vis.x[option], unitH/2, vis.xAxis[option], option, data);
 		});
 
 		$('.js-sort-selected').click(function() {
@@ -213,18 +192,17 @@ define(['moment'], function (moment) {
 			   	$('.js-sort-list').find('li').removeClass('selected');
 			   	$(this).addClass('selected');
 
-				//new axis
 				var option = $(this).data().value;
-				var newY = vis.y.domain(data.sort(function (a, b) { return dataSort(option, a, b); })
-					.map(function(d) { return d.id }))
-					.copy();
-				vis.svg.selectAll('.director')
-					.sort(function(a, b) { return posSort(option, newY, a, b); })
+
+				//resort dataset
+				var sorted = data.sort(function (a, b) { return dataSort(option, a, b); })
+					.map(function (d) { return d.id; })
 
 				//transition
 				vis.svg.selectAll('.director')
 			    	.transition().duration(1000)
-			        .attr('transform', function (d) { return 'translate(0, ' + newY(d.id) + ')'; })
+			        .attr('transform', function (d, i) {
+			        	return 'translate(0, ' + unitH * sorted.indexOf(d.id) + ')'; })
 			        .each('end', function(d, i) {
 			        	if (i === _.size(data) - 1) {
 			        		showVisElements(option);

@@ -8,7 +8,7 @@ define(['moment'], function (moment) {
 		var margin = { top: 50, right: 40, bottom: 100, left: 220};
 		var dim = {
 			w: $('.vis').width() - margin.left - margin.right,
-			h: _.size(data) * unitH - margin.bottom - margin.top
+			h: _.size(data) * unitH
 		};
 
 		$('.js-director-more').css('width', dim.w).css('left', margin.left);
@@ -157,7 +157,7 @@ define(['moment'], function (moment) {
 				.data(data)
 			.enter().append('g')
 				.attr('class', function (d) { return 'director director-' + d.id; })
-				.attr('transform', function (d) { return 'translate(0, ' + y(d.id) + ')'; })
+				.attr('transform', function (d, i) { return 'translate(0, ' + unitH * i + ')'; })
 
 		_.each(data, function (datum) {
 
