@@ -84,6 +84,7 @@ getMovies <- function (id, name, birthday) {
   movies$oscars <- ""
   movies[movies$title %in% nominatedTitles , "oscars"] <- "nominated"
   movies[movies$title %in% wonTitles , "oscars"] <- "won"
+  
   movies$year <- lapply(movies$title, function(x) {
     if (x %in% nominatedTitles) {
       nominates[nominates$title == x, 'year']
@@ -114,7 +115,8 @@ getBio <- function (id) {
   bio <- list (birthday = bioData$birthday,
                deathday = bioData$deathday,
                imdb_id = bioData$imdb_id,
-               place_of_birth = bioData$bioData$place_of_birth
+               place_of_birth = bioData$place_of_birth
+              )
 }
 
 #director list

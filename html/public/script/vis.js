@@ -89,8 +89,9 @@ define(['moment'], function (moment) {
 					d3.select(this).style('opacity', 1);
 					director.append('text')
 						.attr('x', d3.mouse(this)[0])
-						.attr('y', cy - 8 * 2)
-						.text(d.title + (d.oscars ? ' - ' + d.oscars : ''))
+						.attr('y', cy - 10)
+						.text(d.title + ' (' + d.release_date.slice(0, 4) + ') '
+							+ (d.oscars ? ' - ' + d.oscars : ''))
 						.attr('class', 'movie-info js-movie-info');
 				})
 				.on('mouseout', function (d) {
@@ -237,7 +238,7 @@ define(['moment'], function (moment) {
 					.attr('y1', 0)
 					.attr('y2', unitH)
 					.attr('class', function (d, i) {
-						return 'year'  + (i > 0 ? '-others' : '-first')
+						return 'year'  + (i > 0 ? '-others' : '-first js-first js-first-' + id)
 							+ ' js-year js-elm js-elm-' + id + ' js-year-' + id;
 					});
 			director.selectAll('.year-text')

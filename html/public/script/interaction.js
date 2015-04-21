@@ -115,6 +115,13 @@ define(['moment'], function (moment) {
 		$('#vis').find('svg').attr('height', +currentH + contentH * dir);
 	}
 
+	function showFirstYearList(selections, sort) {
+		selections.style('stroke-width', 1)
+			.style('stroke', sort === 'age' ? '#85b83c' : '#f34242') /* refer css */
+			.style('stroke-dashArray', '2, 2')
+			.style('opacity', 1);
+	}
+
 	function showVisElements(option) {
 
 		//show elements depending on the selected option
@@ -124,6 +131,11 @@ define(['moment'], function (moment) {
 			var o = option.split('_')[0];
 			d3.selectAll('.js-' + o).transition().style('opacity', 1);
 			d3.selectAll('.js-' + o + '-text').transition().style('opacity', 1);
+
+			//show first awards line
+			if (o == 'age' || o == 'career') {
+				showFirstYearList(d3.selectAll('.js-first'), o);
+			}
 		}
 	}
 
@@ -183,6 +195,7 @@ define(['moment'], function (moment) {
 			$('.js-sort-list').find('li').click(function() {
 
 				//hide all vis elements
+				$('.js-first').removeAttr('style');
 				d3.selectAll('.js-elm').style('opacity', 0);
 
 				//update the selection text
@@ -227,13 +240,18 @@ define(['moment'], function (moment) {
 	function updateDirectorVis(id, o) {
 
 		if (o === 1) { //show all elements when open
+			$('.js-first-' + id).removeAttr('style');
 			d3.selectAll('.js-elm-' + id).transition().style('opacity', o);
 		} else { //hide elements that are not for the selected option
 			var allElements = ['birth', 'death', 'death-h', 'death-v', 'career', 'age', 'year'];
 			_.each(_.difference(allElements, [sortOption.split('_')[0]]), function (d) {
-				d3.selectAll('.js-' + d + '-' + id).transition().style('opacity', 0);
-				d3.selectAll('.js-' + d + '-text-' + id).transition().style('opacity', 0);
+				d3.selectAll('.js-' + d + '-' + id).style('opacity', 0);
+				d3.selectAll('.js-' + d + '-text-' + id).style('opacity', 0);
 			});
+			var s = sortOption.split('_')[0];
+			if (s === 'age' || s === 'career') {
+				showFirstYearList(d3.select('.js-first-' + id), s);
+			}
 		}
 	}
 
