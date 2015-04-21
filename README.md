@@ -1,6 +1,6 @@
 # Road to Master Piece
 
-"Road to Master Piece" is a visualization project that shows the sixty-one diretors who one Academy Awards for Best Directing since 1941. 
+"Road to Master Piece" is a visualization project that shows the sixty-one diretors who one Academy Awards for Best Directing since 1941.
 
 Each director's works are presented throughout a timeline. Those movies that won or nominated are highlighted.
 
@@ -18,7 +18,7 @@ Install Javascript libraries
 
 ```
 $ cd public
-bower install jquery underscore moment d3 textures
+bower install jquery underscore moment d3
 ````
 
 You can see the visualiatoin by opening the index.html file with the major browsers except Chrome. If you're using a chrome, start a simple web server.
@@ -59,4 +59,4 @@ Open API_KEY.local and enter the API key you required. Then save it as a text fi
 ```
 $ cp API_KEY.local API_KEY.txt
 ```
-You will get dataset.json in ../html/public folder at the end. 
+You will get dataset.json in ../html/public folder at the end.

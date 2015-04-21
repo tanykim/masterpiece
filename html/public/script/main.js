@@ -3,8 +3,7 @@ require.config({
         jquery: '../bower_components/jquery/dist/jquery',
         underscore: '../bower_components/underscore/underscore',
         d3: '../bower_components/d3/d3',
-        moment: '../bower_components/moment/moment',
-        textures: '../bower_components/textures/textures'
+        moment: '../bower_components/moment/moment'
     }
 });
 require([
@@ -13,9 +12,8 @@ require([
     'd3',
     'moment',
     'vis',
-    'interaction',
-    'textures'
-], function ($, _, d3, moment, Vis, I, textures) {
+    'interaction'
+], function ($, _, d3, moment, Vis, I) {
 
     'use strict';
 

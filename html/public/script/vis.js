@@ -1,4 +1,4 @@
-define(['moment', 'textures'], function (moment, textures) {
+define(['moment'], function (moment) {
 
 	'use strict';
 
@@ -213,9 +213,6 @@ define(['moment', 'textures'], function (moment, textures) {
 			var firstOscars = datum.awards[0].age;
 			var ageY = barW + barW / 2;
 			drawLine(director, 0, x(firstOscars), ageY, ageY, 'age', id);
-			var tAge = textures.lines().size(4).strokeWidth(1).background('#85b83c');
-			svg.call(tAge);
-			svg.selectAll('.age').style('stroke', tAge.url());
 			drawText(director, x(firstOscars) + 16, ageY + 5,
 				Math.floor(datum.age) + ' years old' , 'age-text', id);
 
@@ -226,9 +223,6 @@ define(['moment', 'textures'], function (moment, textures) {
 			drawLine(director,
 				x(firstDirecting), x(firstOscars), careerY, careerY,
 				'career', id);
-			var tCareer = textures.lines().size(4).strokeWidth(1).background('#f34242');
-			svg.call(tCareer);
-			svg.selectAll('.career').style('stroke', tCareer.url());
 			drawText(director,
 				x(firstOscars) + 16, careerY + 3,
 				Math.round((firstOscars-firstDirecting) * 10)/10 + ' years',
