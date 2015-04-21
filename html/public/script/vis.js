@@ -2,23 +2,18 @@ define(['moment', 'textures'], function (moment, textures) {
 
 	'use strict';
 
-	var unitH, dim, svg;
-	var movieR, barW, cy;
+	var drawSVG = function(data) {
 
-	var drawSVG = function(E, data) {
-
-		// console.log(E);
-		unitH = E.unitH;
-		var margin = E.margin;
-
-		dim = {
+		var unitH = 52;
+		var margin = { top: 50, right: 40, bottom: 100, left: 220};
+		var dim = {
 			w: $('.vis').width() - margin.left - margin.right,
-			h: _.size(data) * unitH - margin.bottom
+			h: _.size(data) * unitH - margin.bottom - margin.top
 		};
 
 		$('.js-director-more').css('width', dim.w).css('left', margin.left);
 
-		svg = d3.select('#vis').append('svg')
+		var svg = d3.select('#vis').append('svg')
 			.attr('width', dim.w + margin.left + margin.right)
 			.attr('height', dim.h + margin.bottom + margin.top)
 			.append('g')
@@ -52,6 +47,9 @@ define(['moment', 'textures'], function (moment, textures) {
 			.attr('class', 'x-axis');
 
 	    return {
+	    	unitH: unitH,
+	    	margin: margin,
+	    	dim: dim,
 	    	x: x,
 	    	y: y,
 	    	xAxis: xAxis,
@@ -59,42 +57,69 @@ define(['moment', 'textures'], function (moment, textures) {
 	    };
 	};
 
-	function drawMovies(data, director, x) {
+	function drawMovies(data, director, x, cy) {
+
+		function drawStar(k) {
+			var c1 = Math.cos(0.2 * Math.PI);
+			var c2 = Math.cos(0.4 * Math.PI);
+		    var s1 = Math.sin(0.2 * Math.PI);
+		    var s2 = Math.sin(0.4 * Math.PI);
+		    var r = 1;
+		    var hr = r / 1.5;
+		    var r1 = 1.5 * r * c2/c1;
+			var star = [[0,-r], [r1*s1,-r1*c1], [r*s2,-r*c2], [r1*s2,r1*c2],
+					[r*s1,r*c1], [0,r1], [-r*s1,r*c1], [-r1*s2,r1*c2],
+					[-r*s2,-r*c2],[-r1*s1,-r1*c1],[0,-r]];
+			var line = d3.svg.line()
+					.x(function (d) {return d[0] * k;})
+   					.y(function (d) {return d[1] * k;});
+   			return line(star) + 'Z';
+		}
+
 
 		director.selectAll('.movie')
 				.data(data)
 			.enter().append('circle')
 				.attr('cx', function (d) { return x(d.age); })
 				.attr('cy', cy)
-				.attr('r', movieR)
-				.style('fill', E.color.movie)
+				.attr('r', 8)
 				.style('opacity', 0.2)
 				.attr('class', 'movie js-movies')
 				.on('mouseover', function (d) {
 					d3.select(this).style('opacity', 1);
 					director.append('text')
 						.attr('x', d3.mouse(this)[0])
-						.attr('y', cy - movieR * 2)
-						.text(function () { return d.title + (d.oscars ? ' - ' + d.oscars : ''); })
+						.attr('y', cy - 8 * 2)
+						.text(d.title + (d.oscars ? ' - ' + d.oscars : ''))
 						.attr('class', 'movie-info js-movie-info');
 				})
 				.on('mouseout', function (d) {
 					d3.select(this).style('opacity', 0.2);
 					d3.selectAll('.js-movie-info').remove();
 				});
-		_.each(['nominated', 'won'], function (sort) {
-			var movies = _.filter(data, function (d) {
+		var special = _.map(['nominated', 'won'], function (sort) {
+		 	return _.filter(data, function (d) {
 				return d.oscars === sort;
 			});
-			director.selectAll('.' + sort)
-					.data(movies)
-				.enter().append('circle')
-					.attr('cx', function (d) { return x(d.age); })
-					.attr('cy', cy)
-					.attr('r', 4)
-					.style('fill', E.color[sort])
-					.attr('class', sort + ' js-movies')
 		});
+		director.selectAll('.nominated')
+				.data(special[0])
+			.enter().append('circle')
+				.attr('cx', function (d) { return x(d.age); })
+				.attr('cy', cy)
+				.attr('r', 4)
+				.attr('class', 'nominated js-movies');
+		director.selectAll('.won')
+				.data(special[1])
+			.enter().append('path')
+				.attr('d', drawStar(6))
+				.attr('transform', function (d) {
+					return 'translate(' + x(d.age) + ', ' + cy + ')';
+				})
+				// .attr('class', function (d, i) {
+				// 	return 'won' + (i == 0 ? '-first' : '') + ' js-wons';
+				// });
+				.attr('class', 'won js-wons');
 	}
 
 	function drawLine(director, x1, x2, y1, y2, c, id) {
@@ -103,10 +128,8 @@ define(['moment', 'textures'], function (moment, textures) {
 			.attr('x2', x2)
 			.attr('y1', y1)
 			.attr('y2', y2)
-			.style('stroke', E.color[c])
-			.style('stroke-width', E.stroke[c])
 			.style('opacity', 0)
-			.attr('class', c + ' js-' + c + '-' + id + ' js-elm js-elm-' + id);
+			.attr('class', c + ' js-' + c + ' js-' + c + '-' + id + ' js-elm js-elm-' + id);
 	}
 
 	function drawText(director, x, y, t, c, id, anchor) {
@@ -114,17 +137,20 @@ define(['moment', 'textures'], function (moment, textures) {
 			.attr('x', x)
 			.attr('y', y)
 			.text(t)
-			.style('fill', E.color[c])
 			.style('opacity', 0)
 			.style('text-anchor', anchor)
-			.attr('class', c + ' js-' + c + '-' + id + ' js-elm js-elm-' + id);
+			.attr('class', c + ' js-' + c + ' js-' + c + '-' + id + ' js-elm js-elm-' + id);
 	}
 
-	function drawVis(E, data, x, y) {
+	function drawVis(data, vis) {
 
-		movieR = E.movieR;
-		barW = E.barW;
-		cy = E.unitH/2;
+		var unitH = vis.unitH;
+		var svg = vis.svg;
+		var dim = vis.dim;
+		var x = vis.x.age;
+		var y = vis.y;
+		var more = 30;
+		var barW = 6;
 
 		//g of each director
 		svg.selectAll('.director')
@@ -149,18 +175,17 @@ define(['moment', 'textures'], function (moment, textures) {
 				.attr('x', -20)
 				.attr('y', unitH/2 + 4)
 				.text(datum.name)
-				.attr('class', 'y-axis-text link js-axis-text');
+				.attr('class', 'link y-axis-text js-axis-text');
 			director.append('path')
-				.attr('d', E.chevron().open)
-				.style('fill', E.color.chevron)
-				.attr('class', 'js-axis-text link js-axis-open-' + id);
+				.attr('d', 'M -4 ' + (unitH/2 - 2) + ' h -10 l 5 6 z')
+				.attr('class', 'chevron link js-axis-text js-axis-open-' + id);
 
 			//movies
-			drawMovies(datum.movies, director, x);
+			drawMovies(datum.movies, director, x, unitH/2);
 
 			//birth and death
-			drawLine(director, 0, 0, 0, unitH + E.margin.more, 'birth', id);
-			drawText(director, 6, unitH + E.margin.more * 0.7,
+			drawLine(director, 0, 0, 0, unitH + more, 'birth', id);
+			drawText(director, 6, unitH + more * 0.7,
 				'Born on ' + moment(datum.bio.birthday, 'YYYY-MM-DD').format('MMM D, YYYY') +
 				(datum.bio.place_of_birth
 				? ', ' + datum.bio.place_of_birth
@@ -170,10 +195,10 @@ define(['moment', 'textures'], function (moment, textures) {
 				? moment(datum.bio.deathday, 'YYYY-MM-DD')
 					.diff(moment(datum.bio.birthday, 'YYYY-MM-DD'), 'years', true)
 				: moment().diff(moment(datum.bio.birthday, 'YYYY-MM-DD'), 'years', true);
-			drawLine(director, x(death), x(death), 0, unitH + E.margin.more,
+			drawLine(director, x(death), x(death), 0, unitH + more,
 				'death', id);
 			drawText(director,
-				x(death) - 6, unitH + E.margin.more * 0.7,
+				x(death) - 6, unitH + more * 0.7,
 				(datum.bio.deathday
 				? 'Died on ' + moment(datum.bio.deathday, 'YYYY-MM-DD').format('MMM D, YYYY') +
 				', age ' + Math.floor(death)
@@ -188,7 +213,7 @@ define(['moment', 'textures'], function (moment, textures) {
 			var firstOscars = datum.awards[0].age;
 			var ageY = barW + barW / 2;
 			drawLine(director, 0, x(firstOscars), ageY, ageY, 'age', id);
-			var tAge = textures.lines().size(4).strokeWidth(1).background(E.color.age);
+			var tAge = textures.lines().size(4).strokeWidth(1).background('#85b83c');
 			svg.call(tAge);
 			svg.selectAll('.age').style('stroke', tAge.url());
 			drawText(director, x(firstOscars) + 16, ageY + 5,
@@ -201,7 +226,7 @@ define(['moment', 'textures'], function (moment, textures) {
 			drawLine(director,
 				x(firstDirecting), x(firstOscars), careerY, careerY,
 				'career', id);
-			var tCareer = textures.lines().size(4).strokeWidth(1).background(E.color.career);
+			var tCareer = textures.lines().size(4).strokeWidth(1).background('#f34242');
 			svg.call(tCareer);
 			svg.selectAll('.career').style('stroke', tCareer.url());
 			drawText(director,
@@ -218,8 +243,8 @@ define(['moment', 'textures'], function (moment, textures) {
 					.attr('y1', 0)
 					.attr('y2', unitH)
 					.attr('class', function (d, i) {
-						return 'year year'  + (i > 0 ? '-others' : '-first')
-							+ ' js-years js-elm js-elm-' + id + ' js-year-' + id;
+						return 'year'  + (i > 0 ? '-others' : '-first')
+							+ ' js-year js-elm js-elm-' + id + ' js-year-' + id;
 					});
 			director.selectAll('.year-text')
 					.data(datum.awards)
@@ -229,8 +254,8 @@ define(['moment', 'textures'], function (moment, textures) {
 					.text(function (d, i) { return datum.years[i]; })
 					.attr('transform', function (d) { return 'rotate(-45, ' + (x(d.age) + 8)+ ', 14)'; })
 					.attr('class', function (d, i) {
-						return 'year-text year-text'  + (i > 0 ? '-others' : '-first')
-							+ ' js-years-text js-elm js-elm-' + id + ' js-year-text-' + id;
+						return 'year-'  + (i > 0 ? 'others' : 'first') + '-text'
+							+ ' js-year-text js-elm js-elm-' + id + ' js-year-text-' + id;
 					})
 		});
 	}

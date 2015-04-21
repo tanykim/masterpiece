@@ -25,15 +25,15 @@
 		<li class="sort">
 			<div class="sort-selected link js-sort-selected">Year of the first Oscars (new to old)</div>
 			<ul class="list invisible js-sort-list">
-				<li data-value="year_asc"> Year of the first Oscars (old to new) </li>
-				<li class="selected" data-value="year_desc"> Year of the first Oscars (new to old) </li>
-				<li data-value="age_asc"> Age at the first Oscars (young to old) </li>
-				<li data-value="age_desc"> Age at the first Oscars (old to young)</li>
-				<li data-value="career_asc"> Years from debut (short to long) </li>
-				<li data-value="career_desc"> Years from debut (long to short) </li>
-				<li data-value="firstname"> Name (A-Z)</li>
-				<li data-value="count_asc"> Number of directed movies (small to large)</li>
-				<li data-value="count_desc"> Number of directed movies (large to small)</li>
+				<li class="list-year" data-value="year_asc"> Year of the first Oscars (old to new) </li>
+				<li class="list-year selected" data-value="year_desc"> Year of the first Oscars (new to old) </li>
+				<li class="list-age divide" data-value="age_asc"> Age at the first Oscars (young to old) </li>
+				<li class="list-age" data-value="age_desc"> Age at the first Oscars (old to young)</li>
+				<li class="list-career divide" data-value="career_asc"> Years from debut (short to long) </li>
+				<li class="list-career" data-value="career_desc"> Years from debut (long to short) </li>
+				<li class="list-normal divide" data-value="firstname"> Name (A-Z)</li>
+				<li class="list-normal" data-value="count_asc"> Number of directed movies (small to large)</li>
+				<li class="list-normal" data-value="count_desc"> Number of directed movies (large to small)</li>
 			</ul>
 		</li>
 		<li class="option-title"><span class="option-divide">&amp;</span> Timeline</li>
@@ -54,15 +54,15 @@
 		<ul class="first">
 			<li class="oscars">First Oscars</li>
 			<li class="time">
-				At the age of <span class="js-d-age"></span> (<span class="js-d-year"></span>) <br/>
-				After <span class="js-d-career"></span> years of debut, <span class="debut js-d-debut"></span>
+				At the age of <span class="age js-d-age"></span> (<span class="js-d-year"></span>) <br/>
+				After <span class="career js-d-career"></span> years of debut, <span class="debut js-d-debut"></span>
 			</li>
 		</ul>
 		<div class="won">
-			Won
+			<span class="heading">Won</span>
 			<ul class="js-d-won"></ul>
 			<div class="nominated hide js-d-nominated-wrapper">
-				Nominated
+				<span class="heading">Nominated</span>
 				<ul class="js-d-nominated"></ul>
 			</div>
 		</div>

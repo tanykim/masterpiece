@@ -1,16 +1,10 @@
 require.config({
-    shim: {
-        'elements': {
-            exports: 'E'
-        }
-    },
     paths: {
         jquery: '../bower_components/jquery/dist/jquery',
         underscore: '../bower_components/underscore/underscore',
         d3: '../bower_components/d3/d3',
         moment: '../bower_components/moment/moment',
-        textures: '../bower_components/textures/textures',
-        elements: 'elements'
+        textures: '../bower_components/textures/textures'
     }
 });
 require([
@@ -20,9 +14,8 @@ require([
     'moment',
     'vis',
     'interaction',
-    'textures',
-    'elements'
-], function ($, _, d3, moment, Vis, I, textures, E) {
+    'textures'
+], function ($, _, d3, moment, Vis, I, textures) {
 
     'use strict';
 
@@ -61,10 +54,10 @@ require([
     $.getJSON('dataset.json').done(function (d) {
         console.log(d);
         var data = d.reverse(); //from newest
-        var vis = Vis.drawSVG(E, data);
-        Vis.drawVis(E, data, vis.x.age, vis.y);
-        I.callInteraction(vis, data);
-        I.callDirectorOpen(data);
+        var vis = Vis.drawSVG(data);
+        Vis.drawVis(data, vis);
+        I.callInteraction(data, vis);
+        I.callDirectorOpen(data, vis);
     });
 
 });
