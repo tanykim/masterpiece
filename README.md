@@ -1,10 +1,10 @@
 # Road to Masterpiece
 
-"Road to Masterpiece" is a visualization project that shows the sixty-one diretors who one Academy Awards for Best Directing since 1941.
+"Road to Masterpiece" is a visualization project that shows the sixty-one directors who one Academy Awards for Best Directing since 1941.
 
 Each director's works are presented throughout a timeline. Those movies that won or nominated are highlighted.
 
-The list of directors can be sorted in various ways - By the year when the the director won for the first time, by the age of the first award, by the time from the debut as a director to the first award. According to the sorting options, related information is displayed over the timeline. In addition, sorting by name, and the total number of directed movies are available.
+The list of directors can be sorted in various ways - by the year when the director won for the first time, by the age of the first award, and by the spanned time from the debut as a director to the first award. According to the sorting options, related information is displayed over the timeline. In addition, sorting by name, and the total number of directed movies are available.
 
 ## Client-side Set-up
 
@@ -21,7 +21,7 @@ $ cd ../public
 bower install jquery underscore moment d3
 ````
 
-You can see the visualiatoin by opening the index.html file with the major browsers except Chrome. If you're using a chrome, start a simple web server.
+You can see the visualization by opening the index.html file with the major browsers except Chrome. If you're using Chrome, start a simple web server.
 
 ```
 $ python -m SimpleHTTPServer
@@ -34,11 +34,11 @@ Test on your browser.
 
 #### 1. wiki.R
 
-The list of Oscars winners are retreived from this Wikipedia page:
+The list of Oscars winners are retrieved from this Wikipedia page:
 
 > http://en.wikipedia.org/wiki/Academy_Award_for_Best_Directing
 
-Ceremony dates are retreived from here:
+Ceremony dates are retrieved from here:
 > http://en.wikipedia.org/wiki/List_of_Academy_Awards_ceremonies
 
 You will get two files at the end: winners.csv and nominates.csv
