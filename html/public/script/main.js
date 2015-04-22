@@ -45,9 +45,9 @@ require([
     }).click(function () {
         if ($(this).data().value === 't') {
             window.open('https://twitter.com/intent/tweet?text=' +
-                'Check this cool visualization of' +
-                'Osacars winners in Best Directing!' +
-                'by @tanykim http%3A%2F%2Ftany.kim%2Fmasterpiece');
+                'Check this cute visualization of' +
+                ' Osacars winners in Best Directing!' +
+                ' by @tanykim http%3A%2F%2Ftany.kim%2Fmasterpiece');
         } else {
             window.open('https://www.facebook.com/sharer/sharer.php?' +
                 'u=http%3A%2F%2Ftany.kim%2Fmasterpiece');
