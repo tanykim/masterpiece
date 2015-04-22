@@ -187,7 +187,7 @@ define(['moment'], function (moment) {
 			director.append('text')
 				.attr('x', -20)
 				.attr('y', unitH/2 + 11)
-				.text('(' + datum.years.toString().replace(',', ', ') + ')')
+				.text('(' + datum.years.toString().split(',').join(', ') + ')')
 				.attr('class', 'link y-axis-text-year js-axis-text');
 			director.append('path')
 				.attr('d', 'M -4 ' + (unitH/2 - 2) + ' h -10 l 5 6 z')
