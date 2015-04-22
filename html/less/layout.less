@@ -1,0 +1,184 @@
+
+/* header */
+@headerH: @em * 1.6;
+@headerPadding: @em / 4;
+@side: 5%;
+
+.shadow {
+    box-shadow: 0 0 6px fade(@title, 50%);
+}
+.header-scrolled {
+    z-index: 200;
+    font-family: 'Rokkitt';
+    font-weight: 700;
+    font-size: @larger;
+    padding: @headerPadding 0;
+    background-color: @title-bg;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    line-height: @headerH;
+    color: fade(@bg, 80%);
+    .shadow();
+}
+.social-over {
+    color: @white !important;
+}
+.header-social {
+    z-index: 300;
+    position: fixed;
+    text-align: right;
+    top: 0;
+    width: 100%;
+    .twitter, .facebook {
+        margin-top: 0.25em;
+        color: fade(@white, 30%);
+        padding-right: 0.2em;
+    }
+    .facebook {
+        margin-right: 0.2em;
+    }
+}
+.vis-axis {
+    z-index: 200;
+    width: 100%;
+    height: 40px; /* refer margin.top  */
+    background-color: @bg;
+    padding-left: @side;
+}
+.fixed {
+    position: fixed;
+    top: @headerH + @headerPadding * 2;
+    font-size: @larger;
+}
+.header {
+    padding-top: 1em;
+    text-align: center;
+    background-color: @title;
+    .title {
+        color: @bg;
+        font-family: 'Rokkitt';
+        font-weight: 700;
+        font-size: @huge;
+    }
+    .desc {
+        color: @sub;
+        .highlight-1 {
+            color: @won;
+        }
+        .highlight-2 {
+            color: @age;
+        }
+        .highlight-3 {
+            color: @career;
+        }
+    }
+}
+.options {
+    .shadow();
+    font-size: @small;
+    background-color: @options-bg;
+    padding: 1em 0;
+    list-style-type: none;
+    margin: 1.2em 0 1em 0;
+    li {
+        display: inline-block;
+    }
+}
+.option-title, .option-title-right {
+    font-family: 'Rokkitt';
+    font-size: @large;
+    font-weight: 700;
+    padding-right: 0.5em;
+}
+.option-title-right {
+    padding-left: 2em;
+}
+.sort {
+    z-index: 100;
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    width: 340px;
+    .sort-selected {
+        background: url('../images/chevron-down.png') no-repeat 98% @white;
+        background-size: 1.5em;
+        padding: 0.25em 1em;
+        border: 1px solid @border;
+        line-height: 2em;
+    }
+    .clicked {
+        background: url('../images/chevron-up.png') no-repeat 98% @white;
+        background-size: 1.5em;
+    }
+    .list {
+        width: 100%;
+        box-sizing: border-box;
+        background: @white;
+        position: absolute;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        border-right: 1px solid @border;
+        border-bottom: 1px solid @border;
+        border-left: 1px solid @border;
+        box-shadow: 0 0 8px -2px fade(@title, 50%);
+        li {
+            display: list-item;
+            cursor: pointer;
+            padding: 0.75em 1em;
+        }
+        .list-year:hover {
+            background-color: fadeOut(@year, 80%);
+        }
+        .list-age:hover {
+            background-color: fadeOut(@age, 80%);
+        }
+        .list-career:hover {
+            background-color: fadeOut(@career, 80%);
+        }
+        .list-normal:hover {
+            background-color: fadeOut(@sub, 90%);
+        }
+        .divide {
+            border-top: 1px solid @border;
+        }
+        .selected {
+            font-weight: 700;
+        }
+    }
+}
+.footer {
+    background: @options-bg;
+    padding: 2em @side 1em;
+    .content, .copyright{
+        padding-left: 220px; /* refer marin.left */
+        margin-bottom: 1em;
+    }
+    .source-title {
+        color: @sub;
+        font-family: 'Rokkitt';
+    }
+    .sources {
+        font-size: @small;
+        margin-top: 1em;
+        line-height: @large * 1.2;
+        a {
+            color: @sub;
+        }
+    }
+    .copyright {
+        font-family: 'Rokkitt';
+        line-height: @large * 1.2;
+        a.l1 {
+            color: @won;
+        }
+        a.l2 {
+            color: @age;
+        }
+        a.l3 {
+            color: @career;
+        }
+    }
+}

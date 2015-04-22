@@ -1,23 +1,23 @@
-# Road to Master Piece
+# Road to Masterpiece
 
-"Road to Master Piece" is a visualization project that shows the sixty-one diretors who one Academy Awards for Best Directing since 1941.
+"Road to Masterpiece" is a visualization project that shows the sixty-one diretors who one Academy Awards for Best Directing since 1941.
 
 Each director's works are presented throughout a timeline. Those movies that won or nominated are highlighted.
 
-*More explanation comes here.*
+The list of directors can be sorted in various ways - By the year when the the director won for the first time, by the age of the first award, by the time from the debut as a director to the first award. According to the sorting options, related information is displayed over the timeline. In addition, sorting by name, and the total number of directed movies are available.
 
 ## Client-side Set-up
 
 Process a Less file to generate a style file.
 
 ```
-$ cd html
-$ lessc style.less /public/style/style.css
+$ cd html/less
+$ lessc style.less ../public/style/style.css
 ```
-Install Javascript libraries
+Install necessary Javascript libraries
 
 ```
-$ cd public
+$ cd ../public
 bower install jquery underscore moment d3
 ````
 
@@ -44,7 +44,6 @@ Ceremony dates are retreived from here:
 You will get two files at the end: winners.csv and nominates.csv
 
 #### 2. movies.R
-
 
 Data of the directors' work and basic biography are accessible via The Movie Database API.
 

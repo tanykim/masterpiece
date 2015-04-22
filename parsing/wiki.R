@@ -1,6 +1,5 @@
 library(XML)
-library(rjson)
-library(RJSONIO)
+library(jsonlite)
 library(RCurl)
 library(stringi)
 
@@ -33,7 +32,14 @@ for (i in 1:length(byDecades)) {
     #Oscars are held in the next year
     year <- as.numeric(items[j]) + 1
     ceremonyDate <- datesText[grep(year, datesText)]
+    title <- stri_sub(items[j+2], 4, -1)
     
+    #Unmatched titles at moves.R
+    if (title == "Birdman or (The Unexpected Virtue of Ignorance)") {
+      title <- "Birdman"
+    } else if (title == "The Godfather Part II") {
+      title  <- "The Godfather: Part II"
+    }
     multipleNames <- list()
     if (grepl("and", items[j+1])) {
       multipleNames <- unlist(strsplit(items[j+1], " and "))
@@ -44,16 +50,16 @@ for (i in 1:length(byDecades)) {
       for (k in 1:length(multipleNames)) {
         name <- multipleNames[k]
         winnerDf <- rbind(winnerDf,
-                          data.frame(year = as.numeric(items[j]),
+                          data.frame(year = year - 1,
                                      name = name,
-                                     title = stri_sub(items[j+2], 4, -1),
+                                     title = title,
                                      date = ceremonyDate))        
       }
     } else {
       winnerDf <- rbind(winnerDf,
-                        data.frame(year = as.numeric(items[j]),
+                        data.frame(year = year - 1,
                                    name = items[j+1],
-                                   title = stri_sub(items[j+2], 4, -1),
+                                   title = title,
                                    date = ceremonyDate))      
     }
     

@@ -1,0 +1,209 @@
+
+/* vis elements */
+.vis {
+    width: 100% - @side * 2;
+    margin: -40px auto 0; /* refer elments margin.top */
+    position: relative;
+}
+.loading {
+    font-size: @huge;
+    text-align: center;
+    padding: 10% 0;
+    color: @sub;
+    font-family: 'Rokkitt';
+    letter-spacing: 0.4em;
+}
+.movie-list{
+    margin: 0.375em 0 0 -@tiny;
+    font-size: 1em;
+    list-style-type: none;
+    line-height: 1.25em;
+}
+.movie-heading{
+    font-family: 'Rokkitt';
+    font-weight: 700;
+}
+.director-more {
+    color: @main;
+    position: absolute;
+    top: 0;
+    border-bottom: 2px solid @movie;
+    box-sizing: border-box;
+    .dummy {
+        height: 40px;
+    }
+    .name {
+        padding: 1em;
+        font-family: 'Rokkitt';
+        font-weight: 700;
+        font-size: @large;
+        background-color: @light;
+        font-size: @large;
+    }
+    .imdb {
+        font-weight: normal;
+        font-size: @tiny;
+        background-color: @movie;
+        padding: 2px 6px;
+        display: inline-block;
+        margin-left: 6px;
+        a {
+            color: @white;
+            text-decoration: none;
+        }
+    }
+    .first {
+        background-color: @bg;
+        padding: 1em 0;
+        margin: 0;
+        border: 1px solid @light;
+        list-style-type: none;
+        li {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .oscars {
+            padding-left: 1em;
+            padding-right: @small;
+        }
+        .time {
+            border-left: 1px solid @border;
+            padding-left: 1em;
+            line-height: 1.25em;
+            .age {
+                color: @age;
+            }
+            .career {
+                color: @career;
+            }
+        }
+        .debut {
+            font-style: italic;
+        }
+    }
+    .won, .directed{
+        background-color: @light;
+        ul {
+            .movie-list();
+        }
+    }
+    .won {
+        .heading {
+            .movie-heading();
+            color: @won;
+        }
+        padding: 1em;
+    }
+    .nominated {
+        padding-top: 1em;
+        .heading {
+            .movie-heading();
+            color: @nominated;
+        }
+        ul {
+            .movie-list();
+        }
+    }
+    .directed {
+        padding-left: 1em;
+        padding-bottom: 1em;
+        font-family: 'Rokkitt';
+        color: @sub;
+        .number {
+            font-weight: 700;
+            color: @movie;
+        }
+    }
+}
+
+.vis line {
+    shape-rendering: crispEdges;
+}
+.axis text {
+    font-size: 12px;
+    fill: @main;
+}
+.axis line {
+    stroke: @main;
+}
+.axis path {
+   fill: none;
+   stroke: none;
+}
+.x-axis {
+    stroke: @main;
+}
+.y-axis {
+    stroke: @yAxis;
+    stroke-width: 1;
+}
+.y-axis-text {
+    text-anchor: end;
+    font-size: 14px;
+    fill: @main;
+}
+.y-axis-text-year {
+    text-anchor: end;
+    font-size: 12px;
+    fill: @sub;
+}
+.chevron {
+    fill: @chevron;
+}
+.movie {
+    fill: @movie;
+}
+.won {
+    fill: @won;
+}
+/*.won-first {
+    stroke: @won;
+    stroke-width: 2px;
+    fill: @won-first;
+}*/
+.nominated {
+    fill: @nominated;
+}
+.career {
+    stroke: @career;
+    stroke-width: 6;
+}
+.career-text {
+    fill: @career;
+}
+.age {
+    stroke: @age;
+    stroke-width: 6;
+}
+.age-text {
+    fill: @age;
+}
+.year-first {
+    stroke: @won;
+    stroke-width: 2px;
+}
+.year-first-text {
+    fill: @won;
+}
+.year-others {
+    stroke: @year-others;
+}
+.year-others-text {
+    fill: @year-others;
+}
+.career-text, .age-text, .year-first-text, .year-others-text, .birth-text, .death-text {
+    font-size: 12px;
+    .unselectable();
+}
+.birth, .death, {
+    stroke: @birth;
+    stroke-dashArray: 2, 2;
+}
+.death-v, .death-h {
+    stroke: @birth;
+    stroke-width: 3px;
+}
+.movie-info {
+    font-size: 14px;
+    text-anchor: middle;
+}

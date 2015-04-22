@@ -12,7 +12,7 @@ define(['moment'], function (moment) {
 		chevron = {
 			open: 'M -4 ' + (unitH/2 - 2) + ' h -10 l 5 6 z',
 			close: 'M -4 ' + (unitH/2 + 2) + ' h -10 l 5 -6 z'
-		}
+		};
 	}
 
 	function rePosition(c, index, x1, x2, hasText) {
@@ -47,21 +47,24 @@ define(['moment'], function (moment) {
 			if (option === 'year' && datum.bio.deathday === '') {
 				death = moment();
 			} else if (option === 'year' && datum.bio.deathday !== '') {
-				death = moment(datum.bio.deathday, 'YYYY-MM-DD')
+				death = moment(datum.bio.deathday, 'YYYY-MM-DD');
 			} else if (option === 'age' && datum.bio.deathday === '') {
-				death = moment().diff(moment(datum.bio.birthday, 'YYYY-MM-DD'), 'years', true);
+				death = moment()
+					.diff(moment(datum.bio.birthday, 'YYYY-MM-DD'),
+						'years', true);
 			} else {
 				death = moment(datum.bio.deathday, 'YYYY-MM-DD')
-					.diff(moment(datum.bio.birthday, 'YYYY-MM-DD'), 'years', true);
+					.diff(moment(datum.bio.birthday, 'YYYY-MM-DD'),
+						'years', true);
 			}
 
 			//career
-			var firstDirecting = option === 'year'
-				? moment(datum.movies[0].release_date, 'YYYY-MM-DD')
-				: datum.movies[0].age;
-			var firstOscars = option === 'year'
-				? moment(datum.awards[0].date, 'MMMM D, YYYY')
-				: datum.awards[0].age;
+			var firstDirecting = option === 'year' ?
+				moment(datum.movies[0].release_date, 'YYYY-MM-DD') :
+				datum.movies[0].age;
+			var firstOscars = option === 'year' ?
+				moment(datum.awards[0].date, 'MMMM D, YYYY') :
+				datum.awards[0].age;
 
 			rePosition('birth', index, x(birth), x(birth), 6);
 			rePosition('death', index, x(death), x(death), -6);
@@ -76,38 +79,40 @@ define(['moment'], function (moment) {
 		//movies & years of awards
 		d3.selectAll('.js-movies').transition()
 			.attr('cx', function (d) {
-				return option === 'year'
-					? x(moment(d.release_date, 'YYYY-MM-DD'))
-					: x(d.age);
+				return option === 'year' ?
+					x(moment(d.release_date, 'YYYY-MM-DD')) :
+					x(d.age);
 				});
 		d3.selectAll('.js-wons').transition()
 			.attr('transform', function (d) {
-				return option === 'year'
-					? 'translate(' + x(moment(d.release_date, 'YYYY-MM-DD')) + ', ' + cy + ')'
-					: 'translate(' + x(d.age) + ', ' + cy + ')'
+				return option === 'year' ?
+					'translate(' + x(moment(d.release_date, 'YYYY-MM-DD')) +
+						', ' + cy + ')' :
+					'translate(' + x(d.age) + ', ' + cy + ')';
 				});
 		d3.selectAll('.js-year').transition()
 			.attr('x1', function (d) {
-				return option === 'year'
-					? x(moment(d.date, 'MMMM D, YYYY'))
-					: x(d.age);
+				return option === 'year' ?
+					x(moment(d.date, 'MMMM D, YYYY')) :
+					x(d.age);
 				})
 			.attr('x2', function (d) {
-				return option === 'year'
-					? x(moment(d.date, 'MMMM D, YYYY'))
-					: x(d.age);
-				})
+				return option === 'year' ?
+					x(moment(d.date, 'MMMM D, YYYY')) :
+					x(d.age);
+				});
 		d3.selectAll('.js-year-text').transition()
 			.attr('x', function (d) {
-				return option === 'year'
-					? x(moment(d.date, 'MMMM D, YYYY')) + 4
-					: x(d.age) + 4;
+				return option === 'year' ?
+					x(moment(d.date, 'MMMM D, YYYY')) + 4 :
+					x(d.age) + 4;
 				})
 			.attr('transform', function (d) {
-				return option === 'year'
-					? 'rotate(-45, ' + (x(moment(d.date, 'MMMM D, YYYY')) + 8)+ ', 14)'
-				    : 'rotate(-45, ' + (x(d.age) + 8)+ ', 14)';
-				})
+				return option === 'year' ?
+					'rotate(-45, ' +
+						(x(moment(d.date, 'MMMM D, YYYY')) + 8) +', 14)' :
+				    'rotate(-45, ' + (x(d.age) + 8)+ ', 14)';
+				});
 	}
 
 	function updateSvgHeight(dir) {
@@ -117,7 +122,7 @@ define(['moment'], function (moment) {
 
 	function showFirstYearList(selections, sort) {
 		selections.style('stroke-width', 1)
-			.style('stroke', sort === 'age' ? '#85b83c' : '#f34242') /* refer css */
+			.style('stroke', sort === 'age' ? '#85b83c' : '#0e8c97') /* refer css */
 			.style('stroke-dashArray', '2, 2')
 			.style('opacity', 1);
 	}
@@ -141,7 +146,7 @@ define(['moment'], function (moment) {
 
 	var callInteraction = function (data, vis) {
 
-		var unitH = vis.unitH
+		var unitH = vis.unitH;
 		setChevron(unitH);
 
 		var dataSort = function (option, a, b) {
@@ -208,14 +213,16 @@ define(['moment'], function (moment) {
 				var option = $(this).data().value;
 
 				//resort dataset
-				var sorted = data.sort(function (a, b) { return dataSort(option, a, b); })
-					.map(function (d) { return d.id; })
+				var sorted = data.sort(function (a, b) {
+						return dataSort(option, a, b);
+					}).map(function (d) { return d.id; });
 
 				//transition
 				vis.svg.selectAll('.director')
 			    	.transition().duration(1000)
 			        .attr('transform', function (d, i) {
-			        	return 'translate(0, ' + unitH * sorted.indexOf(d.id) + ')'; })
+			        	return 'translate(0, ' +
+			        		unitH * sorted.indexOf(d.id) + ')'; })
 			        .each('end', function(d, i) {
 			        	if (i === _.size(data) - 1) {
 			        		showVisElements(option);
@@ -224,7 +231,7 @@ define(['moment'], function (moment) {
 			    sortOption = option;
 			});
 		});
-	}
+	};
 
 	function getYPos(g) {
 		var yPos;
@@ -243,11 +250,13 @@ define(['moment'], function (moment) {
 			$('.js-first-' + id).removeAttr('style');
 			d3.selectAll('.js-elm-' + id).transition().style('opacity', o);
 		} else { //hide elements that are not for the selected option
-			var allElements = ['birth', 'death', 'death-h', 'death-v', 'career', 'age', 'year'];
-			_.each(_.difference(allElements, [sortOption.split('_')[0]]), function (d) {
-				d3.selectAll('.js-' + d + '-' + id).style('opacity', 0);
-				d3.selectAll('.js-' + d + '-text-' + id).style('opacity', 0);
-			});
+			var allElements = ['birth', 'death', 'death-h',
+				'death-v', 'career', 'age', 'year'];
+			_.each(_.difference(allElements, [sortOption.split('_')[0]]),
+				function (d) {
+					d3.selectAll('.js-' + d + '-' + id).style('opacity', 0);
+					d3.selectAll('.js-' + d + '-text-' + id).style('opacity', 0);
+				});
 			var s = sortOption.split('_')[0];
 			if (s === 'age' || s === 'career') {
 				showFirstYearList(d3.select('.js-first-' + id), s);
@@ -266,8 +275,9 @@ define(['moment'], function (moment) {
 		$('.js-d-name').html(d.name);
 		$('.js-d-age').html(Math.floor(d.age));
 		$('.js-d-year').html(d.years[0]);
-		$('.js-d-debut').html(d.movies[0].title + ' (' + d.movies[0].release_date.substring(0, 4) + ')');
-		$('.js-d-career').html(Math.round((d.age - d.movies[0].age) * 10) / 10)
+		$('.js-d-debut').html(d.movies[0].title + ' (' +
+			d.movies[0].release_date.substring(0, 4) + ')');
+		$('.js-d-career').html(Math.round((d.age - d.movies[0].age) * 10) / 10);
 
 		$('.js-d-won').html('');
 		_.each(highlights('won'), function (m) {
@@ -278,14 +288,16 @@ define(['moment'], function (moment) {
 			$('.js-d-nominated-wrapper').removeClass('hide');
 			$('.js-d-nominated').html('');
 			_.each(nominated, function (m) {
-				$('.js-d-nominated').append('<li>' + m.title + ' (' + m.year + ')</li>');
+				$('.js-d-nominated').append('<li>' + m.title +
+					' (' + m.year + ')</li>');
 			});
 		} else {
 			$('.js-d-nominated-wrapper').addClass('hide');
 		}
 
-		$('.js-d-number').html(d.movies.length)
-		$('.js-d-imdb').attr('href', 'http://www.imdb.com/name/' + d.bio.imdb_id);
+		$('.js-d-number').html(d.movies.length);
+		$('.js-d-imdb')
+			.attr('href', 'http://www.imdb.com/name/' + d.bio.imdb_id);
 
 		contentH = $('.js-director-more').outerHeight();
 	}
@@ -297,8 +309,9 @@ define(['moment'], function (moment) {
 		_.each($('#vis').find('.director'), function (g) {
 			var yTrans = getYPos($(g));
 			if (yTrans > yPos) {
-				d3.select(g).attr('transform', 'translate(0 ,' + (yTrans + contentH * dir) + ')');
-			};
+				d3.select(g).attr('transform',
+					'translate(0 ,' + (yTrans + contentH * dir) + ')');
+			}
 		});
 	}
 
@@ -309,7 +322,8 @@ define(['moment'], function (moment) {
 			updateDirectorVis(d.id, 1); //show all elements
 			putDirectorInfo(d); //html info in the expanded panel
 			slideDirectors(1, yPos); //slide down directors below
-			$('.js-director-more').removeClass('hide').css('top', yPos + vis.unitH + vis.margin.top);
+			$('.js-director-more').removeClass('hide')
+				.css('top', yPos + vis.unitH + vis.margin.top);
 			prevId = d.id;
 			prevYPos = yPos;
 			status = 'open';
@@ -323,7 +337,7 @@ define(['moment'], function (moment) {
 				slideDirectors(-1, prevYPos); //slide up directors below
 				var id = this.__data__.id;
 				if (id === prevId) { //close the opened one
-					$('.js-director-more').addClass('hide')
+					$('.js-director-more').addClass('hide');
 					$('.js-axis-open-' + prevId).attr('d', chevron.open);
 					status = 'closed';
 				} else {
@@ -332,7 +346,7 @@ define(['moment'], function (moment) {
 				}
 			}
 		});
-	}
+	};
 
 	return {
 		callInteraction: callInteraction,

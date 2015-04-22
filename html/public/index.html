@@ -2,24 +2,25 @@
 <meta charset="utf-8">
 <html>
 <head>
-<title>Road to Master Piece</title>
+<title>Road to Masterpiece by Tanyoung Kim</title>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="/style/style.css"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:title" content="Oscars Best Direcitng Winners"/>
 <meta property="og:site_name" content="Road to Master Piece"/>
-<meta property="og:url" content="http://tany.kim/master-piece"/>
+<meta property="og:url" content="http://tany.kim/masterpiece"/>
 <meta property="og:locale" content="en_US"/>
-<meta property="og:description" content="Visualiation of Academy Awards Winners in Best Directing since 1941 - http%3A%2F%2F.tany.kim%2Fmaster-piece"/>
-<meta property="og:image" content="http://tany.kim/master-piece/images/logo.png"/>
-<meta property="og:image:secure_url" content="https://tany.kim/master-piece/images/logo.png"/>
+<meta property="og:description" content="Visualiation of Academy Awards Winners in Best Directing since 1941 - http%3A%2F%2F.tany.kim%2Fmasterpiece"/>
+<meta property="og:image" content="http://tany.kim/masterpiece/images/logo.png"/>
+<meta property="og:image:secure_url" content="https://tany.kim/masterpiece/images/logo.png"/>
 <meta property="og:image:type" content="image/png"/>
 <meta property="og:image:width" content="160"/>
 <meta property="og:image:height" content="160"/>
 </head>
 <body>
 <div class="header">
-	<div class="title js-title">Road to Master Piece</div>
-	<div class="desc">61 Film directors who won Academy Awards for Best Directing Since 1941</div>
+	<div class="title js-title">Road to Masterpiece</div>
+	<div class="desc">61 <span class="highlight-1">Film directors</span> who won <span class="highlight-2">Academy Awards</span> for <span class="highlight-3">Best Directing</span> Since 1941</div>
 	<ul class="options">
 		<li class="option-title">Sort by</li>
 		<li class="sort">
@@ -36,7 +37,7 @@
 				<li class="list-normal" data-value="count_desc"> Number of directed movies (large to small)</li>
 			</ul>
 		</li>
-		<li class="option-title"><span class="option-divide">&amp;</span> Timeline</li>
+		<li class="option-title-right"> Timeline</li>
 		<li class="axis-switch">
 			<input type="radio" name="axis" data-value="age" checked="checked"> Age (0-100)</input>
 			<input type="radio" name="axis" data-value="year"> Year (1910-2020)</input>
@@ -45,6 +46,7 @@
 </div>
 <div id="vis-axis" class="vis-axis js-vis-axis"></div>
 <div id="vis" class="vis">
+	<div class="loading js-loading">LOADING</div>
 	<div class="director-more hide js-director-more">
 		<div class="dummy"></div>
 		<div class="name">
@@ -71,41 +73,34 @@
 		</div>
 	</div>
 </div>
-<div class="header-scrolled hide js-header-title">Road to Master Piece</div>
+<div class="header-scrolled hide js-header-title">Road to Masterpiece</div>
 <div class="header-social">
-	<a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Ftany.kim%2Fmaster-piece" target="_blank">FaceBook</a>
-	 |
-	<a href="https://twitter.com/intent/tweet?text=Check this cool visualization of Osacars winners in Best Directing! by @tanykim http%3A%2F%2Ftany.kim%2Fmaster-piece" target="_blank">Twitter</a>
+	<i class="twitter link js-social fa fa-twitter-square fa-2x" data-value="t"></i>
+	<i class="facebook link js-social fa fa-facebook-square fa-2x" data-value="f"></i>
 </div>
-<div class="footer hide js-footer">
-	<span>© 2015 <a href="http://tany.kim" target="_blank">Tanyoung Kim</a>
-		<!-- <a href="http://twitter.com/tanykim" target="_blank">@tanykim</a></span> -->
-		|
-	<span class="link js-source"><a>Data Sources</a></span> |
-	<span>View on <a href="https://github.com/tanykim/master-piece" target="_blank">GitHub</a></span> |
-
-	<div class="source hide js-source-content">
-		<div>
-			List of Academy Awards Winners<br/>
+<div class="footer">
+	<div class="content">
+		<span class="source-title">DATA SOURCES</span>
+		<div class="sources">
+			List of Academy Awards Winners:
 			<a href="http://en.wikipedia.org/wiki/Academy_Award_for_Best_Directing" target="_blank">
 				http://en.wikipedia.org/wiki/Academy_Award_for_Best_Directing
-			</a>
-		</div>
-		<div>
-			Ceremony Dates of Academy Awards<br/>
+			</a><br/>
+			Ceremony Dates of Academy Awards:
 			<a href="http://en.wikipedia.org/wiki/List_of_Academy_Awards_ceremonies" target="_blank">
 				http://en.wikipedia.org/wiki/List_of_Academy_Awards_ceremonies
-			</a>
-		</div>
-		<div>
-			Directors' works and basic biography<br/>
+			</a><br/>
+				Directors' works and basic biography:
 			The Movie Database API, <a href="http://docs.themoviedb.apiary.io" target="_blank">
 			http://docs.themoviedb.apiary.io</a>
 		</div>
-		<div class="close"><span class="link js-close">CLOSE</span></div>
+	</div>
+	<div class="copyright">
+		View on <a href="https://github.com/tanykim/masterpiece" target="_blank" class="l1">GitHub</a><br/>
+		© 2015 <a href="http://tany.kim" target="_blank" class="l2">Tanyoung Kim</a>
+		<a href="http://twitter.com/tanykim" target="_blank" class="l3">@tanykim</a>
 	</div>
 </div>
 <script data-main="/script/main" src="http://requirejs.org/docs/release/2.1.17/minified/require.js"></script>
-
 </body>
 </html>

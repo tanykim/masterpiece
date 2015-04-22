@@ -1,9 +1,5 @@
 library(jsonlite)
-library(rjson)
 library(RCurl)
-
-##FIXME
-##Birdman, No Country for Old man
 
 #data frame from the previous R code
 winners <- read.csv("winners.csv")
@@ -87,13 +83,15 @@ getMovies <- function (id, name, birthday) {
   
   movies$year <- lapply(movies$title, function(x) {
     if (x %in% nominatedTitles) {
-      nominates[nominates$title == x, 'year']
+      unique(nominates[nominates$title == x, 'year'])
     } else if (x %in% wonTitles) {
-      winners[winners$title == x, 'year']
+      unique(winners[winners$title == x, 'year'])
     } else {
        ""
     }
   })
+  #process for multiple directors for one year
+  #movies$year <- unique(movies$year)
   
   movies <- movies[movies$release_date != "NULL", ]
   
@@ -139,7 +137,7 @@ for (i in 1:length(winnerDf$name)) {
   
   birthday <- bio$birthday
   awards_dates <- as.character(winners[winners$name == name, "date"])
-  years <- substrRight(awards_dates, 4)
+  years <- as.numeric(substrRight(awards_dates, 4)) - 1
   awards_age <- NULL
   if (!is.null(birthday)) {
     awards_age <- as.numeric(lapply(awards_dates, function (x) as.numeric(as.Date(x, "%B %d, %Y") - as.Date(birthday)) / 365.25 ))
@@ -159,5 +157,5 @@ for (i in 1:length(winnerDf$name)) {
 }
 
 #create JSON
-dataset <- toJSON(directors)
+dataset <- minify(toJSON(directors))
 write(dataset, "../html/public/dataset.json")

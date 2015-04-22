@@ -1,0 +1,63 @@
+@import url(http://fonts.googleapis.com/css?family=Rokkitt:400,700|Open+Sans:400,700);
+
+@bg: #fff;
+@title-bg: #455259;
+@options-bg: #efefef;
+@title: #151e22;
+@border: #ccc;
+
+@main: #222;
+@sub: #777;
+@light: #efefef;
+@white: #fff;
+
+@chevron: @sub;
+@yAxis: #ccc;
+@movie: @title;
+@won: #e54141;
+@won-first: #e5aa3d;
+@nominated: #985454;
+@career: #0e8c97;
+@age: #85b83c;
+@year: @won;
+@year-others: @won;
+@birth: #000;
+
+/* size */
+@em: 1em;
+@tiny: 0.740em; /* 12px */
+@small: 0.875em; /* 14px */
+@large: 1.125em; /* 18px */
+@larger: 1.5em; /* 24px */
+@huge: 2.5em; /* 40px */
+
+body {
+	font-family: Georgia, Times, 'Time New Roman', serif;
+	margin: 0;
+	padding: 0;
+	background: @bg;
+	color: @main;
+}
+.hide {
+	display: none;
+}
+.invisible {
+	visibility: hidden;
+}
+.link {
+	cursor: pointer;
+}
+.bold {
+	font-weight: 700;
+}
+.unselectable {
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+	-o-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+@import 'layout';
+@import 'vis';

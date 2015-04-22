@@ -20,7 +20,6 @@ require([
     //scroll
     function changeHeader() {
         var p = $(window).scrollTop();
-        console.log(p);
         if (p > 150) {
             $('.js-vis-axis').addClass('fixed');
             $('.js-header-title').fadeIn('fast');
@@ -40,17 +39,26 @@ require([
     var scrolled = _.debounce(changeHeader, 100);
     $(window).scroll(scrolled);
 
-    //footer
-    $('.js-source').click(function() {
-        $('.js-source-content').toggle();
-    });
-    $('.js-close').click(function() {
-        $('.js-source-content').hide();
+    //social link
+    $('.js-social').mouseover(function () {
+        $(this).addClass('social-over');
+    }).click(function () {
+        if ($(this).data().value === 't') {
+            window.open('https://twitter.com/intent/tweet?text=' +
+                'Check this cool visualization of' +
+                'Osacars winners in Best Directing!' +
+                'by @tanykim http%3A%2F%2Ftany.kim%2Fmasterpiece');
+        } else {
+            window.open('https://www.facebook.com/sharer/sharer.php?' +
+                'u=http%3A%2F%2Ftany.kim%2Fmasterpiece');
+        }
+    }).mouseout(function () {
+        $(this).removeClass('social-over');
     });
 
     //retreive data
     $.getJSON('dataset.json').done(function (d) {
-        console.log(d);
+        $('.js-loading').addClass('hide');
         var data = d.reverse(); //from newest
         var vis = Vis.drawSVG(data);
         Vis.drawVis(data, vis);
