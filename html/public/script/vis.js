@@ -31,7 +31,7 @@ define(['moment'], function (moment) {
 				})
 				.attr('transform', function (d, i) {
 					return 'translate(0, ' + unitH * i + ')';
-				})
+				});
 
 		//simpleText title
 		svg.append('text')
@@ -290,7 +290,8 @@ define(['moment'], function (moment) {
 						return 'year' +
 							(i > 0 ? '-others' :
 							'-first js-first js-first-' + id) +
-							' js-year js-full js-elm js-elm-' + id + ' js-year-' + id;
+							' js-year js-full js-elm js-elm-' + id +
+							' js-year-' + id;
 					});
 			director.selectAll('.year-text')
 					.data(datum.awards)
