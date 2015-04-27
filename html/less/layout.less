@@ -22,10 +22,8 @@
     color: fade(@bg, 80%);
     .shadow();
 }
-.social-over {
-    color: @white !important;
-}
 .header-social {
+    .hide();
     z-index: 300;
     position: fixed;
     text-align: right;
@@ -38,6 +36,9 @@
     }
     .facebook {
         margin-right: 0.2em;
+    }
+    .social-over {
+        color: @white !important;
     }
 }
 .vis-axis {
@@ -197,6 +198,12 @@
         color: @sub;
         a {
             color: @sub;
+        }
+    }
+    .footer-share {
+        color: @sub;
+        .social-over {
+            color: @main;
         }
     }
 }
