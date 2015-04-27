@@ -5,10 +5,12 @@ define(['moment'], function (moment) {
 	var status = 'closed';
 	var prevId, prevYPos, contentH;
 	var sortOption = 'year_asc';
+	var unitH;
 
-	// var unitH = 52;
+	var visX, visXAxis;
+
 	var chevron;
-	function setChevron(unitH) {
+	function setChevron() {
 		chevron = {
 			open: 'M -4 ' + (unitH/2 - 2) + ' h -10 l 5 6 z',
 			close: 'M -4 ' + (unitH/2 + 2) + ' h -10 l 5 -6 z'
@@ -25,10 +27,20 @@ define(['moment'], function (moment) {
 		}
 	}
 
-	function changeAxis(x, cy, xAxis, option, data) {
+	var changeAxis = function (option, data, newX, newXAxis, w) {
 
-		//change axis
-		d3.selectAll('.x.axis').call(xAxis);
+		//update axis when window size change
+		if (newX) {
+			visX = newX;
+			visXAxis = newXAxis;
+			_.each(['age', 'year'], function (d) {
+				visX[d].range([0, w]);
+            	visXAxis[d].scale(visX[d]);
+            });
+		}
+		var x = visX[option];
+		var xAxis = visXAxis[option];
+		d3.select('.js-axis').call(xAxis);
 
 		_.each(data, function (datum) {
 
@@ -87,8 +99,8 @@ define(['moment'], function (moment) {
 			.attr('transform', function (d) {
 				return option === 'year' ?
 					'translate(' + x(moment(d.release_date, 'YYYY-MM-DD')) +
-						', ' + cy + ')' :
-					'translate(' + x(d.age) + ', ' + cy + ')';
+						', ' + unitH / 2 + ')' :
+					'translate(' + x(d.age) + ', ' + unitH / 2 + ')';
 				});
 		d3.selectAll('.js-year').transition()
 			.attr('x1', function (d) {
@@ -113,7 +125,7 @@ define(['moment'], function (moment) {
 						(x(moment(d.date, 'MMMM D, YYYY')) + 8) +', 14)' :
 				    'rotate(-45, ' + (x(d.age) + 8)+ ', 14)';
 				});
-	}
+	};
 
 	function updateSvgHeight(dir) {
 		var currentH = $('#vis').find('svg').outerHeight();
@@ -144,10 +156,37 @@ define(['moment'], function (moment) {
 		}
 	}
 
-	var callInteraction = function (data, vis) {
+	function updateSimpleElements(option, vals) {
+		var o = option === 'firstname' ? 'firstname' : option.split('_')[0];
+		var fill = {
+			year: '#e54141',
+			age: '#85b83c',
+			career: '#0e8c97',
+			firstname: '#222',
+			count: '#222'
+		};
+        var titles = {
+            year: 'Year of First Oscars',
+            age: 'Age at First Oscars',
+            career: 'Years from Debut',
+            firstname: '',
+            count: '# of Directed Movies'
+        };
 
-		var unitH = vis.unitH;
-		setChevron(unitH);
+		$('.js-simple-elm').text(function() {
+			var id = $(this).data().value;
+			return vals[id][o];
+		}).css('fill', fill[o]);
+		$('.js-simple-elm-title').text(titles[o]);
+	}
+
+	var callInteraction = function (data, vis, directorVals) {
+
+		visX = vis.x;
+		visXAxis = vis.xAxis;
+
+		unitH = vis.unitH;
+		setChevron();
 
 		var dataSort = function (option, a, b) {
 			if (option === 'age_desc') {
@@ -173,7 +212,9 @@ define(['moment'], function (moment) {
 
 		$('input[name=axis]').change(function() {
 			var option = $(this).data().value;
-			changeAxis(vis.x[option], unitH/2, vis.xAxis[option], option, data);
+
+			/* FIXME: when screen changed */
+			changeAxis(option, data);
 		});
 
 		$('.js-sort-selected').click(function() {
@@ -226,6 +267,7 @@ define(['moment'], function (moment) {
 			        .each('end', function(d, i) {
 			        	if (i === _.size(data) - 1) {
 			        		showVisElements(option);
+						   	updateSimpleElements(option, directorVals);
 			        	}
 			        });
 			    sortOption = option;
@@ -323,7 +365,7 @@ define(['moment'], function (moment) {
 			putDirectorInfo(d); //html info in the expanded panel
 			slideDirectors(1, yPos); //slide down directors below
 			$('.js-director-more').removeClass('hide')
-				.css('top', yPos + vis.unitH + vis.margin.top);
+				.css('top', yPos + unitH + vis.margin.top);
 			prevId = d.id;
 			prevYPos = yPos;
 			status = 'open';
@@ -350,6 +392,7 @@ define(['moment'], function (moment) {
 
 	return {
 		callInteraction: callInteraction,
-		callDirectorOpen: callDirectorOpen
+		callDirectorOpen: callDirectorOpen,
+		changeAxis: changeAxis
 	};
 });

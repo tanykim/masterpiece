@@ -5,6 +5,25 @@
     margin: -40px auto 0; /* refer elments margin.top */
     position: relative;
 }
+.small-screen {
+    margin: 1em;
+    background-color: @year;
+    color: @white;
+    padding: 1em;
+    text-align: center;
+    border-radius: 0.5em;
+    .shadow();
+    .close {
+        font-size: @small;
+        margin-top: 1em;
+        color: fade(@white, 50%);
+        display: inline-block;
+        clear: both;
+    }
+    .close:hover {
+        color: @white;
+    }
+}
 .loading {
     font-size: @huge;
     text-align: center;
@@ -27,6 +46,7 @@
     color: @main;
     position: absolute;
     top: 0;
+    width: 100%;
     border-bottom: 2px solid @movie;
     box-sizing: border-box;
     .dummy {
@@ -63,12 +83,14 @@
             vertical-align: middle;
         }
         .oscars {
+            .movie-heading();
             padding-left: 1em;
             padding-right: @small;
         }
         .time {
-            border-left: 1px solid @border;
+            border-left: 4px solid @border;
             padding-left: 1em;
+            padding-right: 1em;
             line-height: 1.25em;
             .age {
                 color: @age;
@@ -156,11 +178,6 @@
 .won {
     fill: @won;
 }
-/*.won-first {
-    stroke: @won;
-    stroke-width: 2px;
-    fill: @won-first;
-}*/
 .nominated {
     fill: @nominated;
 }
@@ -206,4 +223,7 @@
 .movie-info {
     font-size: 14px;
     text-anchor: middle;
+}
+.simple-elm-title {
+    font-size: 14px;
 }

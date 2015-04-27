@@ -11,18 +11,87 @@ define(['moment'], function (moment) {
 			h: _.size(data) * unitH
 		};
 
-		$('.js-director-more').css('width', dim.w).css('left', margin.left);
-
 		var svg = d3.select('#vis').append('svg')
 			.attr('width', dim.w + margin.left + margin.right)
 			.attr('height', dim.h + margin.bottom + margin.top)
+			.attr('class', 'js-svg')
 			.append('g')
 			.attr('transform',
 				'translate(' + margin.left + ', ' + margin.top + ')');
 
+		var y = d3.scale.ordinal().rangeBands([0, dim.h])
+			.domain(_.pluck(data, 'id'));
+
+		//g of each director
+		svg.selectAll('.director')
+				.data(data)
+			.enter().append('g')
+				.attr('class', function (d) {
+					return 'director director-' + d.id;
+				})
+				.attr('transform', function (d, i) {
+					return 'translate(0, ' + unitH * i + ')';
+				})
+
+		//simpleText title
+		svg.append('text')
+			.attr('x', 0)
+			.attr('y', 0)
+			.text('Year of First Oscars')
+			.attr('data-value', 'title')
+			.attr('class', 'simple-elm-title hide js-simple-all js-simple-elm-title');
+
+		_.each(data, function (datum) {
+
+			var id = datum.id;
+			var director = d3.select('.director-' + id);
+
+			//bg and director name
+			director.append('line')
+				.attr('x1', 0)
+				.attr('x2', dim.w)
+				.attr('y1', unitH)
+				.attr('y2', unitH)
+				.attr('class', 'y-axis js-y-axis');
+			director.append('text')
+				.attr('x', -20)
+				.attr('y', unitH/2 - 5)
+				.text(datum.name)
+				.attr('class', 'link y-axis-text js-axis-text');
+			director.append('text')
+				.attr('x', -20)
+				.attr('y', unitH/2 + 11)
+				.text('(' + datum.years.toString().split(',').join(', ') + ')')
+				.attr('class', 'link y-axis-text-year js-axis-text');
+			director.append('path')
+				.attr('d', 'M -4 ' + (unitH/2 - 2) + ' h -10 l 5 6 z')
+				.attr('class', 'chevron link js-axis-text js-axis-open-' + id);
+
+			//simple text
+			director.append('text')
+				.attr('x', 0)
+				.attr('y', unitH/2 + 5)
+				.text(datum.years[0])
+				.attr('data-value', id)
+				.style('fill', '#e54141') /* refer vis.less */
+				.attr('class', 'simple-elm hide js-simple-all ' +
+					'js-simple-elm js-simple-elm-' + id);
+		});
+
+	    return {
+	    	unitH: unitH,
+	    	margin: margin,
+	    	dim: dim,
+	    	y: y,
+	    	svg: svg
+	    };
+	};
+
+	var drawAxisSVG = function (dim, margin) {
 		var svgAxis = d3.select('#vis-axis').append('svg')
 			.attr('width', dim.w + margin.left + margin.right)
 			.attr('height', margin.top + 1)
+			.attr('class', 'js-svg js-full')
 			.append('g')
 			.attr('transform',
 				'translate(' + margin.left + ', ' + margin.top + ')');
@@ -32,8 +101,6 @@ define(['moment'], function (moment) {
 			year: d3.time.scale().range([0, dim.w])
 				.domain([moment('1910', 'YYYY'), moment('2020', 'YYYY')])
 		};
-		var y = d3.scale.ordinal().rangeBands([0, dim.h])
-			.domain(_.pluck(data, 'id'));
 
 		var xAxis = {
 			age: d3.svg.axis().scale(x.age).orient('top'),
@@ -41,24 +108,19 @@ define(['moment'], function (moment) {
 		};
 
 		svgAxis.append('g')
-			.attr('class', 'x axis')
+			.attr('class', 'x axis js-axis')
 			.call(xAxis.age);
 		svgAxis.append('line')
 			.attr('x1', 0)
 			.attr('x2', dim.w)
 			.attr('y1', 0)
 			.attr('y2', 0)
-			.attr('class', 'x-axis');
+			.attr('class', 'x-axis js-x-axis');
 
-	    return {
-	    	unitH: unitH,
-	    	margin: margin,
-	    	dim: dim,
-	    	x: x,
-	    	y: y,
-	    	xAxis: xAxis,
-	    	svg: svg
-	    };
+		return {
+			x: x,
+			xAxis: xAxis
+		};
 	};
 
 	function drawMovies(data, director, x, cy) {
@@ -87,7 +149,7 @@ define(['moment'], function (moment) {
 				.attr('cy', cy)
 				.attr('r', 8)
 				.style('opacity', 0.2)
-				.attr('class', 'movie js-movies')
+				.attr('class', 'movie js-movies js-full')
 				.on('mouseover', function (d) {
 					d3.select(this).style('opacity', 1);
 					director.append('text')
@@ -113,7 +175,7 @@ define(['moment'], function (moment) {
 				.attr('cx', function (d) { return x(d.age); })
 				.attr('cy', cy)
 				.attr('r', 4)
-				.attr('class', 'nominated js-movies');
+				.attr('class', 'nominated js-movies js-full');
 		director.selectAll('.won')
 				.data(special[1])
 			.enter().append('path')
@@ -121,7 +183,7 @@ define(['moment'], function (moment) {
 				.attr('transform', function (d) {
 					return 'translate(' + x(d.age) + ', ' + cy + ')';
 				})
-				.attr('class', 'won js-wons');
+				.attr('class', 'won js-wons js-full');
 	}
 
 	function drawLine(director, x1, x2, y1, y2, c, id) {
@@ -132,7 +194,7 @@ define(['moment'], function (moment) {
 			.attr('y2', y2)
 			.style('opacity', 0)
 			.attr('class', c + ' js-' + c + ' js-' + c + '-' + id +
-				' js-elm js-elm-' + id);
+				' js-full js-elm js-elm-' + id);
 	}
 
 	function drawText(director, x, y, t, c, id, anchor) {
@@ -143,62 +205,31 @@ define(['moment'], function (moment) {
 			.style('opacity', 0)
 			.style('text-anchor', anchor)
 			.attr('class', c + ' js-' + c + ' js-' + c + '-' + id +
-				' js-elm js-elm-' + id);
+				' js-full js-elm js-elm-' + id);
 	}
 
-	function drawVis(data, vis) {
+	var drawFullElements = function (data, vis, x) {
 
 		var unitH = vis.unitH;
 		var svg = vis.svg;
 		var dim = vis.dim;
-		var x = vis.x.age;
-		var y = vis.y;
+		var margin = vis.margin;
 		var more = 30;
 		var barW = 6;
 
-		//g of each director
-		svg.selectAll('.director')
-				.data(data)
-			.enter().append('g')
-				.attr('class', function (d) {
-					return 'director director-' + d.id;
-				})
-				.attr('transform', function (d, i) {
-					return 'translate(0, ' + unitH * i + ')';
-				});
+		var directorVals = {};
 
 		_.each(data, function (datum) {
 
 			var id = datum.id;
 			var director = d3.select('.director-' + id);
 
-			//bg and director name
-			director.append('line')
-				.attr('x1', 0)
-				.attr('x2', dim.w)
-				.attr('y1', unitH)
-				.attr('y2', unitH)
-				.attr('class', 'y-axis');
-			director.append('text')
-				.attr('x', -20)
-				.attr('y', unitH/2 - 5)
-				.text(datum.name)
-				.attr('class', 'link y-axis-text js-axis-text');
-			director.append('text')
-				.attr('x', -20)
-				.attr('y', unitH/2 + 11)
-				.text('(' + datum.years.toString().split(',').join(', ') + ')')
-				.attr('class', 'link y-axis-text-year js-axis-text');
-			director.append('path')
-				.attr('d', 'M -4 ' + (unitH/2 - 2) + ' h -10 l 5 6 z')
-				.attr('class', 'chevron link js-axis-text js-axis-open-' + id);
-
-			//movies
+			//movie dots and highlights
 			drawMovies(datum.movies, director, x, unitH/2);
 
 			//birth and death
 			drawLine(director, 0, 0, 0, unitH + more, 'birth', id);
-			drawText(director, 6, unitH + more * 0.7,
+			drawText(director, 6, unitH + more / 2,
 				'Born on ' +
 				moment(datum.bio.birthday, 'YYYY-MM-DD').format('MMM D, YYYY') +
 				(datum.bio.place_of_birth ?
@@ -214,7 +245,7 @@ define(['moment'], function (moment) {
 			drawLine(director, x(death), x(death), 0, unitH + more,
 				'death', id);
 			drawText(director,
-				x(death) - 6, unitH + more * 0.7,
+				x(death) - 6, unitH + more,
 				(datum.bio.deathday ?
 				'Died on ' +
 				moment(datum.bio.deathday, 'YYYY-MM-DD').format('MMM D, YYYY') +
@@ -238,12 +269,13 @@ define(['moment'], function (moment) {
 			//career
 			var firstDirecting = datum.movies[0].age;
 			var careerY = unitH - barW - barW/2;
+			var fromFirstDirecting = Math.round((firstOscars-firstDirecting) * 10)/10;
 			drawLine(director,
 				x(firstDirecting), x(firstOscars), careerY, careerY,
 				'career', id);
 			drawText(director,
 				x(firstOscars) + 16, careerY + 3,
-				Math.round((firstOscars-firstDirecting) * 10)/10 + ' years',
+				fromFirstDirecting + ' years',
 				'career-text', id);
 
 			//awards dates
@@ -258,7 +290,7 @@ define(['moment'], function (moment) {
 						return 'year' +
 							(i > 0 ? '-others' :
 							'-first js-first js-first-' + id) +
-							' js-year js-elm js-elm-' + id + ' js-year-' + id;
+							' js-year js-full js-elm js-elm-' + id + ' js-year-' + id;
 					});
 			director.selectAll('.year-text')
 					.data(datum.awards)
@@ -272,14 +304,15 @@ define(['moment'], function (moment) {
 					.attr('class', function (d, i) {
 						return 'year-' +
 						(i > 0 ? 'others' : 'first') + '-text' +
-						' js-year-text js-elm js-elm-' + id +
+						' js-year-text js-full js-elm js-elm-' + id +
 						' js-year-text-' + id;
 					});
 		});
-	}
+	};
 
 	return {
 		drawSVG: drawSVG,
-		drawVis: drawVis,
+		drawAxisSVG: drawAxisSVG,
+		drawFullElements: drawFullElements
 	};
 });

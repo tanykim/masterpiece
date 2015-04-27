@@ -17,6 +17,9 @@ require([
 
     'use strict';
 
+    var fullDrawn = false;
+    var data, vis;
+
     //scroll
     function changeHeader() {
         var p = $(window).scrollTop();
@@ -35,9 +38,61 @@ require([
             $('.js-source-content').hide();
         }
     }
-
     var scrolled = _.debounce(changeHeader, 100);
     $(window).scroll(scrolled);
+
+    function setDirectorPanel(w) {
+        if (!w) {
+            w = $('.vis').width() - vis.margin.left - vis.margin.right;
+        }
+        $('.js-director-more')
+            .css('width', w)
+            .css('left', vis.margin.left);
+    }
+
+    //add and control vis elements
+    function callResponsive() {
+
+        var screenW = $('body').width();
+        var w = $('.vis').width() - vis.margin.left - vis.margin.right;
+
+        console.log(screenW, $('.vis').width());
+
+        if (screenW > 480) {
+
+            setDirectorPanel();
+            $('.js-simple-all').hide();
+
+            if (fullDrawn) {
+
+                //change svg and axis width
+                d3.selectAll('.js-svg').attr('width', $('.vis').width());
+                d3.select('.js-x-axis').attr('x2', w);
+                d3.selectAll('.js-y-axis').attr('x2', w);
+
+                //resizing all full vis elements
+                I.changeAxis($('input[name=axis]:checked').data().value,
+                    data, vis.x, vis.xAxis, w);
+
+            } else {
+                var axisVis = Vis.drawAxisSVG(vis.dim, vis.margin);
+                vis.x = axisVis.x;
+                vis.xAxis = axisVis.xAxis;
+                Vis.drawFullElements(data, vis, axisVis.x.age);
+                fullDrawn = true;
+            }
+        } else {
+            $('.js-full').remove();
+            fullDrawn = false;
+            $('.js-director-more').css('width', '').css('left', '');
+            d3.selectAll('.js-y-axis').attr('x2', w);
+            $('.js-simple-all').show();
+        }
+    }
+
+    //resizing
+    var lazyLayout = _.debounce(callResponsive, 400);
+    $(window).resize(lazyLayout);
 
     //social link
     $('.js-social').mouseover(function () {
@@ -59,11 +114,32 @@ require([
     //retreive data
     $.getJSON('dataset.json').done(function (d) {
         $('.js-loading').addClass('hide');
-        var data = d.reverse(); //from newest
-        var vis = Vis.drawSVG(data);
-        Vis.drawVis(data, vis);
-        I.callInteraction(data, vis);
+        data = d.reverse(); //from newest
+        vis = Vis.drawSVG(data);
+
+        var directorVals = _.object(_.map(data, function (datum) {
+            var firstOscars = datum.awards[0].age;
+            var firstDirecting = datum.movies[0].age;
+            return [ datum.id,
+                {
+                    year: datum.years[0],
+                    age: Math.floor(datum.age),
+                    career: Math.round((firstOscars-firstDirecting) * 10)/10,
+                    firstname: '',
+                    count: datum.movies.length
+                }
+            ];
+        }));
+
+        callResponsive();
+
+        I.callInteraction(data, vis, directorVals);
         I.callDirectorOpen(data, vis);
+    });
+
+    //close the intro on small screen
+    $('.js-small-close').click(function () {
+        $('.js-small').addClass('hide');
     });
 
 });

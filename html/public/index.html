@@ -22,28 +22,36 @@
 <div class="header">
 	<div class="title js-title">Road to Masterpiece</div>
 	<div class="desc">61 <span class="highlight-1">Film directors</span> who won <span class="highlight-2">Academy Awards</span> for <span class="highlight-3">Best Directing</span> Since 1941</div>
-	<ul class="options">
-		<li class="option-title">Sort by</li>
-		<li class="sort">
-			<div class="sort-selected link js-sort-selected">Year of the first Oscars (new to old)</div>
-			<ul class="list invisible js-sort-list">
-				<li class="list-year" data-value="year_asc"> Year of the first Oscars (old to new) </li>
-				<li class="list-year selected" data-value="year_desc"> Year of the first Oscars (new to old) </li>
-				<li class="list-age divide" data-value="age_asc"> Age at the first Oscars (young to old) </li>
-				<li class="list-age" data-value="age_desc"> Age at the first Oscars (old to young)</li>
-				<li class="list-career divide" data-value="career_asc"> Years from debut (short to long) </li>
-				<li class="list-career" data-value="career_desc"> Years from debut (long to short) </li>
-				<li class="list-normal divide" data-value="firstname"> Name (A-Z)</li>
-				<li class="list-normal" data-value="count_asc"> Number of directed movies (small to large)</li>
-				<li class="list-normal" data-value="count_desc"> Number of directed movies (large to small)</li>
-			</ul>
-		</li>
-		<li class="option-title-right"> Timeline</li>
-		<li class="axis-switch">
-			<input type="radio" name="axis" data-value="age" checked="checked"> Age (0-100)</input>
-			<input type="radio" name="axis" data-value="year"> Year (1910-2020)</input>
-		</li>
-	</ul>
+	<div class="options-wrapper">
+		<ul class="options">
+			<li class="option-title">Sort by</li>
+			<li class="sort">
+				<div class="sort-selected link js-sort-selected">Year of the first Oscars (new to old)</div>
+				<ul class="list invisible js-sort-list">
+					<li class="list-year" data-value="year_asc"> Year of the first Oscars (old to new) </li>
+					<li class="list-year selected" data-value="year_desc"> Year of the first Oscars (new to old) </li>
+					<li class="list-age divide" data-value="age_asc"> Age at the first Oscars (young to old) </li>
+					<li class="list-age" data-value="age_desc"> Age at the first Oscars (old to young)</li>
+					<li class="list-career divide" data-value="career_asc"> Years from debut (short to long) </li>
+					<li class="list-career" data-value="career_desc"> Years from debut (long to short) </li>
+					<li class="list-normal divide" data-value="firstname"> Name (A-Z)</li>
+					<li class="list-normal" data-value="count_asc"> Number of directed movies (small to large)</li>
+					<li class="list-normal" data-value="count_desc"> Number of directed movies (large to small)</li>
+				</ul>
+			</li>
+		</ul>
+		<ul class="options-right">
+			<li class="option-title js-option-timeline"> Timeline</li>
+			<li class="js-option-timeline">
+				<input type="radio" name="axis" data-value="age" checked="checked"> Age (0-100)</input>
+				<input type="radio" name="axis" data-value="year"> Year (1910-2020)</input>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="small-screen js-small">
+	You can see more interesting visualiation on a bigger screen!<br/>
+	<span class="close link js-small-close">[ close ]</span>
 </div>
 <div id="vis-axis" class="vis-axis js-vis-axis"></div>
 <div id="vis" class="vis">

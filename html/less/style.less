@@ -61,3 +61,29 @@ body {
 
 @import 'layout';
 @import 'vis';
+
+/* responsive features */
+/* @media screen and (min-width: 480px) */
+@media screen and (min-width: 30em) {
+	.options-right {
+		padding-left: 2em;
+		display: inline-block;
+	}
+	.options li {
+        display: inline-block;
+    }
+	.options-right li {
+        display: inline-block;
+    }
+    .small-screen {
+    	display: none;
+    }
+}
+/* @media screen and (min-width: 680px) */
+@media screen and (min-width: 40em) {
+	.footer {
+		.content, .copyright, .notice {
+			padding-left: 220px; /* refer marin.left */
+		}
+	}
+}
