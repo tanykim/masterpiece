@@ -70,11 +70,12 @@ define(['moment'], function (moment) {
 			//simple text
 			director.append('text')
 				.attr('x', 0)
-				.attr('y', unitH/2 + 5)
+				.attr('y', unitH / 2)
 				.text(datum.years[0])
 				.attr('data-value', id)
+				.style('alignment-baseline', 'central')
 				.style('fill', '#e54141') /* refer vis.less */
-				.attr('class', 'simple-elm hide js-simple-all ' +
+				.attr('class', 'hide js-simple-all ' +
 					'js-simple-elm js-simple-elm-' + id);
 		});
 
@@ -263,7 +264,7 @@ define(['moment'], function (moment) {
 			var firstOscars = datum.awards[0].age;
 			var ageY = barW + barW / 2;
 			drawLine(director, 0, x(firstOscars), ageY, ageY, 'age', id);
-			drawText(director, x(firstOscars) + 16, ageY + 5,
+			drawText(director, x(firstOscars) + 16, ageY,
 				Math.floor(datum.age) + ' years old' , 'age-text', id);
 
 			//career
@@ -274,7 +275,7 @@ define(['moment'], function (moment) {
 				x(firstDirecting), x(firstOscars), careerY, careerY,
 				'career', id);
 			drawText(director,
-				x(firstOscars) + 16, careerY + 3,
+				x(firstOscars) + 16, careerY,
 				fromFirstDirecting + ' years',
 				'career-text', id);
 
