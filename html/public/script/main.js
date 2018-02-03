@@ -56,8 +56,6 @@ require([
         var screenW = $('body').width();
         var w = $('.vis').width() - vis.margin.left - vis.margin.right;
 
-        console.log(screenW, $('.vis').width());
-
         if (screenW > 480) {
 
             setDirectorPanel();
@@ -115,6 +113,7 @@ require([
     $.getJSON('dataset.json').done(function (d) {
         $('.js-loading').addClass('hide');
         data = d.reverse(); //from newest
+        $('.js-director-count').text(data.length);
         vis = Vis.drawSVG(data);
 
         var directorVals = _.object(_.map(data, function (datum) {

@@ -19,23 +19,22 @@ getPersonId <- function (name) {
   results <- personData$results
   
   personId <- 0
-  if (personData$total_results == 1) {
-    personId <- unlist(lapply(results, function (x) x$id))
-  } else if (personData$total_results > 1) {
-    for (pId in 1:length(results)) {
-      knownFor <- lapply(results[pId], function(x) x$known_for)
-      titles <- list()
+  results_count <- personData$total_results
+  if (results_count == 1) {
+    personId <- results$id
+  } else if (results_count > 1) {
+    for (pId in 1:results_count) {
+      knownFor <- results[pId, ]$known_for
       for (tId in 1:length(knownFor)) {
-        titles <- lapply(knownFor[[tId]], function(x) x$original_title)
+        titles <- knownFor[[tId]]$original_title
       }
-      
       ##check title
       titlesFromWiki <- union(
         as.character(winners[winners$name == name, "title"]),
         as.character(nominates[nominates$name == name, "title"])
       )
       if (length(intersect(titles, titlesFromWiki)) > 0) {
-        ids <- unlist(lapply(results, function (x) x$id))
+        ids <- results$id
         personId <- ids[pId]
       }
     }
@@ -46,6 +45,7 @@ getPersonId <- function (name) {
 #missing & wrong elements
 winnerDf[winnerDf$name == "John Ford", "id"] <- 8500
 winnerDf[winnerDf$name == "George Stevens", "id"] <- 18738
+winnerDf[winnerDf$name == "Ron Howard", "id"] <- 6159
 
 for (person in 1:nrow(winnerDf)) {
   if (winnerDf[person, "id"] == 0) {
@@ -71,8 +71,10 @@ getMovies <- function (id, name, birthday) {
   movieData <- fromJSON(getURL(movieURL))
   
   #get directed movies
-  movies <- data.frame(t(sapply(movieData$crew,c)))
-  movies <- movies[movies$job == "Director", c("release_date", "title")]
+  movies <- subset(movieData$crew, job == 'Director')
+  movies <- movies[c("release_date", "title")]
+  movies <- movies[!is.na(movies$release_date), ]
+  movies <- movies[movies$release_date != '', ]
   
   #get nominates and winner
   nominatedTitles <- getTitles(nominates, movies, name)
@@ -90,18 +92,15 @@ getMovies <- function (id, name, birthday) {
        ""
     }
   })
-  #process for multiple directors for one year
-  #movies$year <- unique(movies$year)
-  
-  movies <- movies[movies$release_date != "NULL", ]
   
   #get age
   if (!is.null(birthday)) {
-    movies$age <- lapply(movies$release_date, function(x) as.numeric(as.Date(x) - as.Date(birthday))/365.25)    
+    movies$age <- lapply(movies$release_date, function(x) as.numeric(as.Date(x, "%Y-%m-%d") - as.Date(birthday, "%Y-%m-%d"))/365.25)    
   }
   
   #order by release date
   movies <- movies[order(unlist(movies$release_date)), ]
+  movies <- movies[!is.null(movies$release_date), ]
   movies
 }
 
@@ -110,10 +109,15 @@ getBio <- function (id) {
   bioURL <- paste("https://api.themoviedb.org/3/person/", id , 
                   "?api_key=", API_KEY, sep ="")
   bioData <- fromJSON(getURL(bioURL))
+  deathday <- ""
+  if (!is.null(bioData$deathday)) {
+    deathday <- bioData$deathday
+  }
   bio <- list (birthday = bioData$birthday,
-               deathday = bioData$deathday,
+               deathday = deathday,
                imdb_id = bioData$imdb_id,
-               place_of_birth = bioData$place_of_birth
+               place_of_birth = bioData$place_of_birth,
+               name=bioData$name
               )
 }
 
@@ -145,7 +149,7 @@ for (i in 1:length(winnerDf$name)) {
   movies <- getMovies(id, name, birthday)
   moviesList <- unname(as.list(as.data.frame(t(movies))))
   
-  director <- list(name = name,
+  director <- list(name = bio$name,
                    id = id,
                    bio = bio,
                    years = as.list(years),
@@ -157,5 +161,5 @@ for (i in 1:length(winnerDf$name)) {
 }
 
 #create JSON
-dataset <- minify(toJSON(directors))
+dataset <- minify(toJSON(directors, auto_unbox = TRUE))
 write(dataset, "../html/public/dataset.json")
