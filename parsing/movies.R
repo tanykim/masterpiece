@@ -110,13 +110,17 @@ getBio <- function (id) {
                   "?api_key=", API_KEY, sep ="")
   bioData <- fromJSON(getURL(bioURL))
   deathday <- ""
+  birthPlace <- ""
   if (!is.null(bioData$deathday)) {
     deathday <- bioData$deathday
+  }
+  if (!is.null(bioData$place_of_birth)) {
+    birthPlace <- bioData$place_of_birth
   }
   bio <- list (birthday = bioData$birthday,
                deathday = deathday,
                imdb_id = bioData$imdb_id,
-               place_of_birth = bioData$place_of_birth,
+               place_of_birth = birthPlace,
                name=bioData$name
               )
 }
