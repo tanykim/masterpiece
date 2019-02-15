@@ -145,7 +145,7 @@ for (i in 1:length(winnerDf$name)) {
   
   birthday <- bio$birthday
   awards_dates <- as.character(winners[winners$name == name, "date"])
-  years <- as.numeric(substrRight(awards_dates, 4)) - 1
+  years <- as.numeric(substrRight(awards_dates, 4))
   awards_age <- NULL
   if (!is.null(birthday)) {
     awards_age <- as.numeric(lapply(awards_dates, function (x) as.numeric(as.Date(x, "%B %d, %Y") - as.Date(birthday)) / 365.25 ))
