@@ -1,0 +1,6 @@
+html/.DS_Store
+html/public/bower_components/
+parsing/.RData
+parsing/.Rapp.history
+parsing/.Rhistory
+parsing/API_KEY.txt
