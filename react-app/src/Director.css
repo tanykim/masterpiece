@@ -1,0 +1,157 @@
+.Director {
+  position: relative;
+}
+.director-wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+  .director-label {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 6px;
+  }
+  .director-label:hover {
+    cursor: pointer;
+  }
+    .director-text {
+      font-size: 14px;
+      text-align: right;
+      display: inline-block;
+    }
+      .director-text-year {
+        color: var(--oc-gray-7);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+    .director-button {
+      display: inline-block;
+      margin-right: 12px;
+      margin-left: 12px;
+      width: 16px;
+      height: 16px;
+      background: url('assets/down-vis.svg') no-repeat center center;
+    }
+    .director-button.selected {
+      background-image: url('assets/up-vis.svg');
+    }
+
+  .director-vis {
+    border-bottom: 1px solid var(--oc-gray-4);
+  }
+    .vis-wrapper {
+      position: relative;
+    }
+    .director-vis .movie {
+      fill: var(--oc-gray-9);
+      fill-opacity: 0.2;
+    }
+    .director-vis .movie:hover {
+      fill-opacity: 1;
+    }
+    .director-vis .nominated {
+      fill: var(--nominated);
+      pointer-events: none;
+
+    }
+    .director-vis .won {
+      fill: var(--won);
+      pointer-events: none;
+    }
+    .win-line {
+      stroke-width: 1px;
+    }
+    .win-line.year {
+      stroke: var(--won);
+    }
+    .win-line.year.first {
+      stroke-width: 2px;
+    }
+    .win-line.age {
+      stroke: var(--age);
+      stroke-dasharray: 2 2;
+    }
+    .win-line.career {
+      stroke: var(--career);
+      stroke-dasharray: 2 2;
+    }
+    .win-text {
+      fill: var(--won);
+      font-size: 12px;
+    }
+    .horizontal-line {
+      stroke-width: 6px;
+    }
+    .horizontal-line.age {
+      stroke: var(--age);
+    }
+    .horizontal-line.career {
+      stroke: var(--career);
+    }
+    .detail-line {
+      stroke: var(--oc-gray-8);
+      stroke-dasharray: 2 2;
+      stroke-width: 1;
+    }
+    .detail-text {
+      font-size: 12px;
+    }
+    .detail-text.current {
+      font-size: 12px;
+      text-anchor: end;
+    }
+    .dead line {
+      stroke: var(--oc-gray-8);
+      stroke-width: 4px;
+    }
+
+    .sort-info-text {
+      font-size: 12px;
+    }
+    .sort-info-text.year {
+      fill: var(--won);
+      transform: rotate(-45deg);
+    }
+    .sort-info-text.age {
+      fill: var(--age);
+      margin-left: 8px;
+    }
+    .sort-info-text.career {
+      fill: var(--career);
+      margin-left: 8px;
+    }
+
+  .tooltip {
+    position: absolute;
+    background-color: var(--oc-gray-9);
+    font-size: 14px;
+    padding: 0 20px;
+    height: 40px;
+    align-items: center;
+    color: white;
+    pointer-events: none;
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.4);
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.4);
+    border-radius: 4px;
+    width: max-content;
+    white-space: nowrap;
+    z-index: 100;
+    transform: translateX(-50%);
+  }
+  .tooltip:after {
+    content: '';
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 12px solid var(--oc-gray-9);
+    position: absolute;
+    top: 40px;
+    left: calc(50% - 8px);
+  }
+    .tooltip-oscars {
+      background: white;
+      color: var(--won);
+      padding: 2px 4px;
+      margin-left: 8px;
+      border-radius: 2px;
+    }

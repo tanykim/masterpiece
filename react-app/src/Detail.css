@@ -1,0 +1,87 @@
+.Detail {
+  border-bottom: 2px solid var(--oc-gray-8);
+  box-sizing: border-box;
+}
+  .name, .oscars, .other, .nominated, .total {
+    font-family: 'Rokkitt';
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .name {
+    padding: 16px;
+    font-weight: 600;
+    font-size: 20px;
+    background-color: var(--oc-gray-1);
+    display: flex;
+  }
+    .imdb {
+      font-size: 14px;
+      background-color: var(--oc-gray-8);
+      padding: 2px 6px;
+      display: inline-block;
+      margin-left: 12px;
+    }
+    .imdb a {
+      color: white;
+      text-decoration: none;
+    }
+  .awards {
+    padding: 16px;
+    background-color: var(--oc-gray-1);
+  }
+  .first, .award-type {
+    display: flex;
+    align-items: center;
+  }
+  .award-type {
+    margin-bottom: 16px;
+  }
+  .first {
+    padding: 16px;
+    border-right: 1px solid var(--oc-gray-1);
+    border-left: 1px solid var(--oc-gray-1);
+  }
+    .heading {
+      padding-right: 16px;
+      text-transform: capitalize;
+      display: flex;
+      align-items: center;
+    }
+      .heading-icon {
+        margin-right: 6px;
+      }
+      .heading-icon .icon-nominated {
+        border-radius: 6px;
+        background-color: var(--nominated);
+        width: 12px;
+        height: 12px;
+        margin-right: 2px;
+        margin-left: 2px;
+      }
+      .heading .star {
+        fill: var(--won);
+      }
+      .age {
+        color: var(--age);
+      }
+      .career {
+        color: var(--career);
+      }
+      .won, .other {
+        color: var(--won);
+      }
+      .nominated {
+        color: var(--nominated);
+      }
+    .time {
+      border-left: 2px solid var(--oc-gray-4);
+      padding: 4px 0 4px 16px;
+      line-height: 140%;
+    }
+  .total {
+    color: var(--oc-gray-7);
+  }
+    .total .count {
+      color: var(--oc-gray-9);
+      font-weight: 600;
+    }

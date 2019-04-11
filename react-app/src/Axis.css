@@ -1,0 +1,20 @@
+.Axis {
+  display: flex;
+}
+  .Axis svg {
+    overflow: unset;
+  }
+  .axis text {
+    font-family: var(--body-font);
+    font-size: 12px;
+    fill: var(--oc-gray-7);
+  }
+  .axis path {
+    fill: none;
+    stroke: var(--oc-gray-7);
+    stroke-width: 1.5;
+  }
+  .axis .tick line {
+    stroke: var(--oc-gray-7);
+    stroke-width: 1;
+  }

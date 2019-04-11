@@ -1,0 +1,82 @@
+.App {
+
+}
+
+header {
+  text-align: center;
+  padding: 16px 0;
+  background-color: var(--oc-gray-9);
+  color: white;
+}
+  header .title {
+    font-family: var(--emph-font);
+    font-weight: 600;
+    font-size: 40px;
+    /* margin-bottom: 12px; */
+  }
+  header .desc {
+    color: var(--oc-gray-6);
+  }
+  header .highlight-1 {
+    color: var(--won);
+  }
+  header .highlight-2 {
+    color: var(--age);
+  }
+  header .highlight-3 {
+    color: var(--career);
+  }
+
+footer {
+  background: var(--oc-gray-2);
+  padding: 40px 0 28px;
+  display: flex;
+  justify-content: center;
+}
+  .footer-wrapper {
+    text-align: left;
+  }
+  footer .content,
+  footer .copyright,
+  footer .notice {
+    margin-bottom: 16px;
+  }
+  footer .source-title {
+    color: var(--oc-gray-6);
+    font-family: var(--emph-font);
+  }
+  footer .sources {
+    font-size: 14px;
+    margin-top: 16px;
+    line-height: 140%;
+  }
+  footer .sources a {
+    color: var(--oc-gray-6);
+  }
+  footer .copyright {
+    font-family: var(--emph-font);
+    line-height: 140%;
+  }
+  footer .copyright a.l1 {
+    color: var(--won);
+  }
+  footer .copyright a.l2 {
+    color: var(--age);
+  }
+  footer .copyright a.l3 {
+    color: var(--career);
+  }
+  footer .notice {
+    font-family: var(--body-font);
+    font-size: 0.875em;
+    color: var(--oc-gray-6);
+  }
+  footer .notice a {
+    color: #777777;
+  }
+  footer .footer-share {
+    color: var(--oc-gray-6);
+  }
+  footer .footer-share .social-over {
+    color: var(--oc-gray-6);
+  }

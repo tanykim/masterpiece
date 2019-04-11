@@ -1,6 +1,27 @@
-html/.DS_Store
+*/.DS_Store
 html/public/bower_components/
 parsing/.RData
 parsing/.Rapp.history
 parsing/.Rhistory
 parsing/API_KEY.txt
+
+# dependencies
+react-app/node_modules
+react-app/.pnp
+.pnp.js
+
+# testing
+react-app/coverage
+
+# production
+react-app/build
+
+# misc
+react-app/.env.local
+react-app/.env.development.local
+react-app/.env.test.local
+react-app/.env.production.local
+
+react-app/npm-debug.log*
+react-app/yarn-debug.log*
+react-app/yarn-error.log*

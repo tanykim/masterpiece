@@ -1,0 +1,97 @@
+.options-wrapper {
+  box-shadow: 0 0 6px rgba(21, 30, 34, 0.5);
+  font-size: 12px;
+  background-color: var(--oc-gray-1);
+  width: 100%;
+  text-align: center;
+  padding: 16px 0;
+  line-height: 200%;
+  position: relative;
+}
+  .options {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    display: inline-block;
+  }
+  .options:last-child {
+    margin-left: 24px;
+  }
+    .option-title {
+      display: inline-block;
+      font-size: 20px;
+      font-weight: 600;
+      margin-right: 16px;
+      font-family: var(--emph-font);
+    }
+    .sort {
+      z-index: 10;
+      display: inline-block;
+      position: relative;
+      text-align: left;
+      width: 340px;
+      font-size: 14px;
+      padding: 2px 16px;
+      border: 1px solid var(--oc-gray-3);
+      background-color: white;
+    }
+      .sort-selected {
+        margin: 4px 0;
+        line-height: 200%;
+        background-size: 18px;
+        background-repeat: no-repeat;
+        background-position: center right;
+      }
+      .sort-selected.open {
+        background-image: url('assets/down.svg');
+      }
+      .sort-selected.closed {
+        background-image: url('assets/up.svg');
+      }
+
+      .sort .list {
+        width: 100%;
+        box-sizing: border-box;
+        background: white;
+        position: absolute;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        border-right: 1px solid var(--oc-gray-3);
+        border-bottom: 1px solid var(--oc-gray-3);
+        border-left: 1px solid var(--oc-gray-3);
+        box-shadow: 0 0 8px -2px rgba(21, 30, 34, 0.5);
+        top: 40px;
+        left: 0;
+      }
+        .sort .list li {
+          display: list-item;
+          cursor: pointer;
+          padding: 8px 16px;
+        }
+        .sort .list li.selected {
+          font-weight: 600;
+          background-color: var(--oc-gray-1);
+        }
+        .sort .list .list-year:hover {
+          background-color: rgba(229, 65, 65, 0.2);
+        }
+        .sort .list .list-age:hover {
+          background-color: rgba(133, 184, 60, 0.2);
+        }
+        .sort .list .list-career:hover {
+          background-color: rgba(14, 140, 151, 0.2);
+        }
+        .sort .list .list-normal:hover {
+          background-color: rgba(119, 119, 119, 0.1);
+        }
+        .sort .list .divide {
+          border-top: 1px solid var(--oc-gray-3);
+        }
+
+    .timeline {
+      font-size: 14px;
+    }
+    .timeline:last-child {
+      margin-left: 12px;
+    }

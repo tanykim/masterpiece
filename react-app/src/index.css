@@ -1,0 +1,51 @@
+@import url(http://fonts.googleapis.com/css?family=Rokkitt:400,600);
+
+:root {
+  --won: #e54141;
+  --age: #85b83c;
+  --career: #0e8c97;
+  --nominated: #985454;
+  --oc-gray-0: #f8f9fa;
+  --oc-gray-1: #f1f3f5;
+  --oc-gray-2: #e9ecef;
+  --oc-gray-3: #dee2e6;
+  --oc-gray-4: #ced4da;
+  --oc-gray-5: #adb5bd;
+  --oc-gray-6: #868e96;
+  --oc-gray-7: #495057;
+  --oc-gray-8: #343a40;
+  --oc-gray-9: #212529;
+  --body-font: Georgia, Times, 'Time New Roman', serif;
+  --emph-font: 'Rokkitt';
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--body-font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #ffffff;
+  color: var(--oc-gray-9);
+}
+
+.hide {
+  display: none;
+}
+.invisible {
+  visibility: hidden;
+}
+.link {
+  cursor: pointer;
+}
+.bold {
+  font-weight: 600;
+}
+.unselectable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: default;
+}
